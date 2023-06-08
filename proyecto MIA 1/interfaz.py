@@ -48,8 +48,8 @@ def generar_pantalla_login():
 
     def ir_a_pantalla_principal():
 
-        print(campo_usuario.get())
-        print(campo_contrasenia.get())
+        nombre_usuario = campo_usuario.get()
+        contrasenia_usuario = campo_contrasenia.get()
 
         #Agregar en esta area el codigo o funcion para verificar si la contrasenia es valida
 
