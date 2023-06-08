@@ -1,6 +1,9 @@
+import LoginLogic as Lg
 import tkinter as tk
 from tkinter import messagebox
 
+logL = Lg.LoginLg()
+logL.abrirarchivo()
 #myWindow = tk.Tk()
 
 #myWindow.title("Proyecto MIA 1")
@@ -47,13 +50,10 @@ def generar_pantalla_login():
     #campo_contrasenia.pack()
 
     def ir_a_pantalla_principal():
-
-        nombre_usuario = campo_usuario.get()
-        contrasenia_usuario = campo_contrasenia.get()
-
+        resv = logL.verificar(campo_usuario.get(),campo_contrasenia.get())
         #Agregar en esta area el codigo o funcion para verificar si la contrasenia es valida
 
-        if campo_usuario.get() == "archivos" and campo_contrasenia.get() == '12345':
+        if resv:
             pantallaLogin.destroy()
             pantalla1.deiconify()  
         else:
