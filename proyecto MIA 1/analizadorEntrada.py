@@ -243,8 +243,3 @@ def p_error(p):
 
 parser = yacc.yacc()
  
-entrada = "exec -path->/home/Desktop/calificacion.mia modify -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\" add -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\""
-
-resultado = parser.parse(entrada, lexer=lexer)
-
-print("Resultado: {}".format(resultado))

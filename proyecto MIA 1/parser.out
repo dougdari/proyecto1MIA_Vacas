@@ -1,0 +1,1516 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> inicio
+Rule 1     inicio -> l_comando
+Rule 2     l_comando -> l_comando comando
+Rule 3     l_comando -> comando
+Rule 4     comando -> c_configure
+Rule 5     comando -> c_create
+Rule 6     comando -> c_delete
+Rule 7     comando -> c_copy
+Rule 8     comando -> c_transfer
+Rule 9     comando -> c_rename
+Rule 10    comando -> c_modify
+Rule 11    comando -> c_add
+Rule 12    comando -> backup
+Rule 13    comando -> c_exec
+Rule 14    c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo
+Rule 15    c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+Rule 16    c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+Rule 17    c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+Rule 18    c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+Rule 19    c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+Rule 20    nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO
+Rule 21    nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS
+Rule 22    nt_directorio_con_archivo -> nt_solo_directorio
+Rule 23    c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+Rule 24    c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio
+Rule 25    c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+Rule 26    nt_solo_directorio -> SOLO_DIRECTORIO
+Rule 27    nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS
+Rule 28    nt_nombre_archivo -> NOMBRE_ARCHIVO
+Rule 29    nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS
+Rule 30    c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+Rule 31    c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+Rule 32    backup -> BACKUP
+Rule 33    tipo_modo -> LOCAL
+Rule 34    tipo_modo -> CLOUD
+Rule 35    booleanos -> TRUE
+Rule 36    booleanos -> FALSE
+
+Terminals, with rules where they appear
+
+ADD                  : 15
+BACKUP               : 32
+BODY                 : 15 16 25
+CADENA               : 15 16 25 30
+CLOUD                : 34
+CONFIGURE            : 30 31
+COPY                 : 19
+CREATE               : 25
+DELETE               : 23 24
+DIRECTORIO_CON_ARCHIVO : 20
+DIRECTORIO_CON_ARCHIVO_COMILLAS : 21
+ENCRYPT_LOG          : 30 31
+ENCRYPT_READ         : 30 31
+EXEC                 : 14
+FALSE                : 36
+FLECHA               : 14 15 15 16 16 17 17 18 18 18 19 19 23 23 24 25 25 25 30 30 30 30 31 31 31
+FROM                 : 18 19
+LLAVE                : 30
+LOCAL                : 33
+MODE                 : 18
+MODIFY               : 16
+NAME                 : 17 23 25
+NOMBRE_ARCHIVO       : 28
+NOMBRE_ARCHIVO_COMILLAS : 29
+PATH                 : 14 15 16 17 23 24 25
+RENAME               : 17
+SEPARADOR            : 14 15 15 16 16 17 17 18 18 18 19 19 23 23 24 25 25 25 30 30 30 30 31 31 31
+SOLO_DIRECTORIO      : 26
+SOLO_DIRECTORIO_COMILLAS : 27
+TO                   : 18 19
+TRANSFER             : 18
+TRUE                 : 35
+TYPE                 : 30 31
+error                : 
+
+Nonterminals, with rules where they appear
+
+backup               : 12
+booleanos            : 30 30 31 31
+c_add                : 11
+c_configure          : 4
+c_copy               : 7
+c_create             : 5
+c_delete             : 6
+c_exec               : 13
+c_modify             : 10
+c_rename             : 9
+c_transfer           : 8
+comando              : 2 3
+inicio               : 0
+l_comando            : 1 2
+nt_directorio_con_archivo : 14 15 16 17 18 19
+nt_nombre_archivo    : 17 23 25
+nt_solo_directorio   : 18 19 22 23 24 25
+tipo_modo            : 18 30 31
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . inicio
+    (1) inicio -> . l_comando
+    (2) l_comando -> . l_comando comando
+    (3) l_comando -> . comando
+    (4) comando -> . c_configure
+    (5) comando -> . c_create
+    (6) comando -> . c_delete
+    (7) comando -> . c_copy
+    (8) comando -> . c_transfer
+    (9) comando -> . c_rename
+    (10) comando -> . c_modify
+    (11) comando -> . c_add
+    (12) comando -> . backup
+    (13) comando -> . c_exec
+    (30) c_configure -> . CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> . CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+    (25) c_create -> . CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+    (23) c_delete -> . DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> . DELETE SEPARADOR PATH FLECHA nt_solo_directorio
+    (19) c_copy -> . COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+    (18) c_transfer -> . TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+    (17) c_rename -> . RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+    (16) c_modify -> . MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+    (15) c_add -> . ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+    (32) backup -> . BACKUP
+    (14) c_exec -> . EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo
+
+    CONFIGURE       shift and go to state 14
+    CREATE          shift and go to state 15
+    DELETE          shift and go to state 16
+    COPY            shift and go to state 17
+    TRANSFER        shift and go to state 18
+    RENAME          shift and go to state 19
+    MODIFY          shift and go to state 20
+    ADD             shift and go to state 21
+    BACKUP          shift and go to state 22
+    EXEC            shift and go to state 23
+
+    inicio                         shift and go to state 1
+    l_comando                      shift and go to state 2
+    comando                        shift and go to state 3
+    c_configure                    shift and go to state 4
+    c_create                       shift and go to state 5
+    c_delete                       shift and go to state 6
+    c_copy                         shift and go to state 7
+    c_transfer                     shift and go to state 8
+    c_rename                       shift and go to state 9
+    c_modify                       shift and go to state 10
+    c_add                          shift and go to state 11
+    backup                         shift and go to state 12
+    c_exec                         shift and go to state 13
+
+state 1
+
+    (0) S' -> inicio .
+
+
+
+state 2
+
+    (1) inicio -> l_comando .
+    (2) l_comando -> l_comando . comando
+    (4) comando -> . c_configure
+    (5) comando -> . c_create
+    (6) comando -> . c_delete
+    (7) comando -> . c_copy
+    (8) comando -> . c_transfer
+    (9) comando -> . c_rename
+    (10) comando -> . c_modify
+    (11) comando -> . c_add
+    (12) comando -> . backup
+    (13) comando -> . c_exec
+    (30) c_configure -> . CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> . CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+    (25) c_create -> . CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+    (23) c_delete -> . DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> . DELETE SEPARADOR PATH FLECHA nt_solo_directorio
+    (19) c_copy -> . COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+    (18) c_transfer -> . TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+    (17) c_rename -> . RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+    (16) c_modify -> . MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+    (15) c_add -> . ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+    (32) backup -> . BACKUP
+    (14) c_exec -> . EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo
+
+    $end            reduce using rule 1 (inicio -> l_comando .)
+    CONFIGURE       shift and go to state 14
+    CREATE          shift and go to state 15
+    DELETE          shift and go to state 16
+    COPY            shift and go to state 17
+    TRANSFER        shift and go to state 18
+    RENAME          shift and go to state 19
+    MODIFY          shift and go to state 20
+    ADD             shift and go to state 21
+    BACKUP          shift and go to state 22
+    EXEC            shift and go to state 23
+
+    comando                        shift and go to state 24
+    c_configure                    shift and go to state 4
+    c_create                       shift and go to state 5
+    c_delete                       shift and go to state 6
+    c_copy                         shift and go to state 7
+    c_transfer                     shift and go to state 8
+    c_rename                       shift and go to state 9
+    c_modify                       shift and go to state 10
+    c_add                          shift and go to state 11
+    backup                         shift and go to state 12
+    c_exec                         shift and go to state 13
+
+state 3
+
+    (3) l_comando -> comando .
+
+    CONFIGURE       reduce using rule 3 (l_comando -> comando .)
+    CREATE          reduce using rule 3 (l_comando -> comando .)
+    DELETE          reduce using rule 3 (l_comando -> comando .)
+    COPY            reduce using rule 3 (l_comando -> comando .)
+    TRANSFER        reduce using rule 3 (l_comando -> comando .)
+    RENAME          reduce using rule 3 (l_comando -> comando .)
+    MODIFY          reduce using rule 3 (l_comando -> comando .)
+    ADD             reduce using rule 3 (l_comando -> comando .)
+    BACKUP          reduce using rule 3 (l_comando -> comando .)
+    EXEC            reduce using rule 3 (l_comando -> comando .)
+    $end            reduce using rule 3 (l_comando -> comando .)
+
+
+state 4
+
+    (4) comando -> c_configure .
+
+    CONFIGURE       reduce using rule 4 (comando -> c_configure .)
+    CREATE          reduce using rule 4 (comando -> c_configure .)
+    DELETE          reduce using rule 4 (comando -> c_configure .)
+    COPY            reduce using rule 4 (comando -> c_configure .)
+    TRANSFER        reduce using rule 4 (comando -> c_configure .)
+    RENAME          reduce using rule 4 (comando -> c_configure .)
+    MODIFY          reduce using rule 4 (comando -> c_configure .)
+    ADD             reduce using rule 4 (comando -> c_configure .)
+    BACKUP          reduce using rule 4 (comando -> c_configure .)
+    EXEC            reduce using rule 4 (comando -> c_configure .)
+    $end            reduce using rule 4 (comando -> c_configure .)
+
+
+state 5
+
+    (5) comando -> c_create .
+
+    CONFIGURE       reduce using rule 5 (comando -> c_create .)
+    CREATE          reduce using rule 5 (comando -> c_create .)
+    DELETE          reduce using rule 5 (comando -> c_create .)
+    COPY            reduce using rule 5 (comando -> c_create .)
+    TRANSFER        reduce using rule 5 (comando -> c_create .)
+    RENAME          reduce using rule 5 (comando -> c_create .)
+    MODIFY          reduce using rule 5 (comando -> c_create .)
+    ADD             reduce using rule 5 (comando -> c_create .)
+    BACKUP          reduce using rule 5 (comando -> c_create .)
+    EXEC            reduce using rule 5 (comando -> c_create .)
+    $end            reduce using rule 5 (comando -> c_create .)
+
+
+state 6
+
+    (6) comando -> c_delete .
+
+    CONFIGURE       reduce using rule 6 (comando -> c_delete .)
+    CREATE          reduce using rule 6 (comando -> c_delete .)
+    DELETE          reduce using rule 6 (comando -> c_delete .)
+    COPY            reduce using rule 6 (comando -> c_delete .)
+    TRANSFER        reduce using rule 6 (comando -> c_delete .)
+    RENAME          reduce using rule 6 (comando -> c_delete .)
+    MODIFY          reduce using rule 6 (comando -> c_delete .)
+    ADD             reduce using rule 6 (comando -> c_delete .)
+    BACKUP          reduce using rule 6 (comando -> c_delete .)
+    EXEC            reduce using rule 6 (comando -> c_delete .)
+    $end            reduce using rule 6 (comando -> c_delete .)
+
+
+state 7
+
+    (7) comando -> c_copy .
+
+    CONFIGURE       reduce using rule 7 (comando -> c_copy .)
+    CREATE          reduce using rule 7 (comando -> c_copy .)
+    DELETE          reduce using rule 7 (comando -> c_copy .)
+    COPY            reduce using rule 7 (comando -> c_copy .)
+    TRANSFER        reduce using rule 7 (comando -> c_copy .)
+    RENAME          reduce using rule 7 (comando -> c_copy .)
+    MODIFY          reduce using rule 7 (comando -> c_copy .)
+    ADD             reduce using rule 7 (comando -> c_copy .)
+    BACKUP          reduce using rule 7 (comando -> c_copy .)
+    EXEC            reduce using rule 7 (comando -> c_copy .)
+    $end            reduce using rule 7 (comando -> c_copy .)
+
+
+state 8
+
+    (8) comando -> c_transfer .
+
+    CONFIGURE       reduce using rule 8 (comando -> c_transfer .)
+    CREATE          reduce using rule 8 (comando -> c_transfer .)
+    DELETE          reduce using rule 8 (comando -> c_transfer .)
+    COPY            reduce using rule 8 (comando -> c_transfer .)
+    TRANSFER        reduce using rule 8 (comando -> c_transfer .)
+    RENAME          reduce using rule 8 (comando -> c_transfer .)
+    MODIFY          reduce using rule 8 (comando -> c_transfer .)
+    ADD             reduce using rule 8 (comando -> c_transfer .)
+    BACKUP          reduce using rule 8 (comando -> c_transfer .)
+    EXEC            reduce using rule 8 (comando -> c_transfer .)
+    $end            reduce using rule 8 (comando -> c_transfer .)
+
+
+state 9
+
+    (9) comando -> c_rename .
+
+    CONFIGURE       reduce using rule 9 (comando -> c_rename .)
+    CREATE          reduce using rule 9 (comando -> c_rename .)
+    DELETE          reduce using rule 9 (comando -> c_rename .)
+    COPY            reduce using rule 9 (comando -> c_rename .)
+    TRANSFER        reduce using rule 9 (comando -> c_rename .)
+    RENAME          reduce using rule 9 (comando -> c_rename .)
+    MODIFY          reduce using rule 9 (comando -> c_rename .)
+    ADD             reduce using rule 9 (comando -> c_rename .)
+    BACKUP          reduce using rule 9 (comando -> c_rename .)
+    EXEC            reduce using rule 9 (comando -> c_rename .)
+    $end            reduce using rule 9 (comando -> c_rename .)
+
+
+state 10
+
+    (10) comando -> c_modify .
+
+    CONFIGURE       reduce using rule 10 (comando -> c_modify .)
+    CREATE          reduce using rule 10 (comando -> c_modify .)
+    DELETE          reduce using rule 10 (comando -> c_modify .)
+    COPY            reduce using rule 10 (comando -> c_modify .)
+    TRANSFER        reduce using rule 10 (comando -> c_modify .)
+    RENAME          reduce using rule 10 (comando -> c_modify .)
+    MODIFY          reduce using rule 10 (comando -> c_modify .)
+    ADD             reduce using rule 10 (comando -> c_modify .)
+    BACKUP          reduce using rule 10 (comando -> c_modify .)
+    EXEC            reduce using rule 10 (comando -> c_modify .)
+    $end            reduce using rule 10 (comando -> c_modify .)
+
+
+state 11
+
+    (11) comando -> c_add .
+
+    CONFIGURE       reduce using rule 11 (comando -> c_add .)
+    CREATE          reduce using rule 11 (comando -> c_add .)
+    DELETE          reduce using rule 11 (comando -> c_add .)
+    COPY            reduce using rule 11 (comando -> c_add .)
+    TRANSFER        reduce using rule 11 (comando -> c_add .)
+    RENAME          reduce using rule 11 (comando -> c_add .)
+    MODIFY          reduce using rule 11 (comando -> c_add .)
+    ADD             reduce using rule 11 (comando -> c_add .)
+    BACKUP          reduce using rule 11 (comando -> c_add .)
+    EXEC            reduce using rule 11 (comando -> c_add .)
+    $end            reduce using rule 11 (comando -> c_add .)
+
+
+state 12
+
+    (12) comando -> backup .
+
+    CONFIGURE       reduce using rule 12 (comando -> backup .)
+    CREATE          reduce using rule 12 (comando -> backup .)
+    DELETE          reduce using rule 12 (comando -> backup .)
+    COPY            reduce using rule 12 (comando -> backup .)
+    TRANSFER        reduce using rule 12 (comando -> backup .)
+    RENAME          reduce using rule 12 (comando -> backup .)
+    MODIFY          reduce using rule 12 (comando -> backup .)
+    ADD             reduce using rule 12 (comando -> backup .)
+    BACKUP          reduce using rule 12 (comando -> backup .)
+    EXEC            reduce using rule 12 (comando -> backup .)
+    $end            reduce using rule 12 (comando -> backup .)
+
+
+state 13
+
+    (13) comando -> c_exec .
+
+    CONFIGURE       reduce using rule 13 (comando -> c_exec .)
+    CREATE          reduce using rule 13 (comando -> c_exec .)
+    DELETE          reduce using rule 13 (comando -> c_exec .)
+    COPY            reduce using rule 13 (comando -> c_exec .)
+    TRANSFER        reduce using rule 13 (comando -> c_exec .)
+    RENAME          reduce using rule 13 (comando -> c_exec .)
+    MODIFY          reduce using rule 13 (comando -> c_exec .)
+    ADD             reduce using rule 13 (comando -> c_exec .)
+    BACKUP          reduce using rule 13 (comando -> c_exec .)
+    EXEC            reduce using rule 13 (comando -> c_exec .)
+    $end            reduce using rule 13 (comando -> c_exec .)
+
+
+state 14
+
+    (30) c_configure -> CONFIGURE . SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE . SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    SEPARADOR       shift and go to state 25
+
+
+state 15
+
+    (25) c_create -> CREATE . SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 26
+
+
+state 16
+
+    (23) c_delete -> DELETE . SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> DELETE . SEPARADOR PATH FLECHA nt_solo_directorio
+
+    SEPARADOR       shift and go to state 27
+
+
+state 17
+
+    (19) c_copy -> COPY . SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+
+    SEPARADOR       shift and go to state 28
+
+
+state 18
+
+    (18) c_transfer -> TRANSFER . SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+
+    SEPARADOR       shift and go to state 29
+
+
+state 19
+
+    (17) c_rename -> RENAME . SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+
+    SEPARADOR       shift and go to state 30
+
+
+state 20
+
+    (16) c_modify -> MODIFY . SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 31
+
+
+state 21
+
+    (15) c_add -> ADD . SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 32
+
+
+state 22
+
+    (32) backup -> BACKUP .
+
+    CONFIGURE       reduce using rule 32 (backup -> BACKUP .)
+    CREATE          reduce using rule 32 (backup -> BACKUP .)
+    DELETE          reduce using rule 32 (backup -> BACKUP .)
+    COPY            reduce using rule 32 (backup -> BACKUP .)
+    TRANSFER        reduce using rule 32 (backup -> BACKUP .)
+    RENAME          reduce using rule 32 (backup -> BACKUP .)
+    MODIFY          reduce using rule 32 (backup -> BACKUP .)
+    ADD             reduce using rule 32 (backup -> BACKUP .)
+    BACKUP          reduce using rule 32 (backup -> BACKUP .)
+    EXEC            reduce using rule 32 (backup -> BACKUP .)
+    $end            reduce using rule 32 (backup -> BACKUP .)
+
+
+state 23
+
+    (14) c_exec -> EXEC . SEPARADOR PATH FLECHA nt_directorio_con_archivo
+
+    SEPARADOR       shift and go to state 33
+
+
+state 24
+
+    (2) l_comando -> l_comando comando .
+
+    CONFIGURE       reduce using rule 2 (l_comando -> l_comando comando .)
+    CREATE          reduce using rule 2 (l_comando -> l_comando comando .)
+    DELETE          reduce using rule 2 (l_comando -> l_comando comando .)
+    COPY            reduce using rule 2 (l_comando -> l_comando comando .)
+    TRANSFER        reduce using rule 2 (l_comando -> l_comando comando .)
+    RENAME          reduce using rule 2 (l_comando -> l_comando comando .)
+    MODIFY          reduce using rule 2 (l_comando -> l_comando comando .)
+    ADD             reduce using rule 2 (l_comando -> l_comando comando .)
+    BACKUP          reduce using rule 2 (l_comando -> l_comando comando .)
+    EXEC            reduce using rule 2 (l_comando -> l_comando comando .)
+    $end            reduce using rule 2 (l_comando -> l_comando comando .)
+
+
+state 25
+
+    (30) c_configure -> CONFIGURE SEPARADOR . TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR . TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    TYPE            shift and go to state 34
+
+
+state 26
+
+    (25) c_create -> CREATE SEPARADOR . NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+
+    NAME            shift and go to state 35
+
+
+state 27
+
+    (23) c_delete -> DELETE SEPARADOR . PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> DELETE SEPARADOR . PATH FLECHA nt_solo_directorio
+
+    PATH            shift and go to state 36
+
+
+state 28
+
+    (19) c_copy -> COPY SEPARADOR . FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+
+    FROM            shift and go to state 37
+
+
+state 29
+
+    (18) c_transfer -> TRANSFER SEPARADOR . FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+
+    FROM            shift and go to state 38
+
+
+state 30
+
+    (17) c_rename -> RENAME SEPARADOR . PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+
+    PATH            shift and go to state 39
+
+
+state 31
+
+    (16) c_modify -> MODIFY SEPARADOR . PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+
+    PATH            shift and go to state 40
+
+
+state 32
+
+    (15) c_add -> ADD SEPARADOR . PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+
+    PATH            shift and go to state 41
+
+
+state 33
+
+    (14) c_exec -> EXEC SEPARADOR . PATH FLECHA nt_directorio_con_archivo
+
+    PATH            shift and go to state 42
+
+
+state 34
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE . FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE . FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    FLECHA          shift and go to state 43
+
+
+state 35
+
+    (25) c_create -> CREATE SEPARADOR NAME . FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+
+    FLECHA          shift and go to state 44
+
+
+state 36
+
+    (23) c_delete -> DELETE SEPARADOR PATH . FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> DELETE SEPARADOR PATH . FLECHA nt_solo_directorio
+
+    FLECHA          shift and go to state 45
+
+
+state 37
+
+    (19) c_copy -> COPY SEPARADOR FROM . FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+
+    FLECHA          shift and go to state 46
+
+
+state 38
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM . FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+
+    FLECHA          shift and go to state 47
+
+
+state 39
+
+    (17) c_rename -> RENAME SEPARADOR PATH . FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+
+    FLECHA          shift and go to state 48
+
+
+state 40
+
+    (16) c_modify -> MODIFY SEPARADOR PATH . FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+
+    FLECHA          shift and go to state 49
+
+
+state 41
+
+    (15) c_add -> ADD SEPARADOR PATH . FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+
+    FLECHA          shift and go to state 50
+
+
+state 42
+
+    (14) c_exec -> EXEC SEPARADOR PATH . FLECHA nt_directorio_con_archivo
+
+    FLECHA          shift and go to state 51
+
+
+state 43
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA . tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA . tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+    (33) tipo_modo -> . LOCAL
+    (34) tipo_modo -> . CLOUD
+
+    LOCAL           shift and go to state 53
+    CLOUD           shift and go to state 54
+
+    tipo_modo                      shift and go to state 52
+
+state 44
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA . nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+    (28) nt_nombre_archivo -> . NOMBRE_ARCHIVO
+    (29) nt_nombre_archivo -> . NOMBRE_ARCHIVO_COMILLAS
+
+    NOMBRE_ARCHIVO  shift and go to state 56
+    NOMBRE_ARCHIVO_COMILLAS shift and go to state 57
+
+    nt_nombre_archivo              shift and go to state 55
+
+state 45
+
+    (23) c_delete -> DELETE SEPARADOR PATH FLECHA . nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> DELETE SEPARADOR PATH FLECHA . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_solo_directorio             shift and go to state 58
+
+state 46
+
+    (19) c_copy -> COPY SEPARADOR FROM FLECHA . nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio
+    (20) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO
+    (21) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO_COMILLAS
+    (22) nt_directorio_con_archivo -> . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    DIRECTORIO_CON_ARCHIVO shift and go to state 63
+    DIRECTORIO_CON_ARCHIVO_COMILLAS shift and go to state 64
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_directorio_con_archivo      shift and go to state 61
+    nt_solo_directorio             shift and go to state 62
+
+state 47
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA . nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+    (20) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO
+    (21) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO_COMILLAS
+    (22) nt_directorio_con_archivo -> . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    DIRECTORIO_CON_ARCHIVO shift and go to state 63
+    DIRECTORIO_CON_ARCHIVO_COMILLAS shift and go to state 64
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_directorio_con_archivo      shift and go to state 65
+    nt_solo_directorio             shift and go to state 62
+
+state 48
+
+    (17) c_rename -> RENAME SEPARADOR PATH FLECHA . nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo
+    (20) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO
+    (21) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO_COMILLAS
+    (22) nt_directorio_con_archivo -> . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    DIRECTORIO_CON_ARCHIVO shift and go to state 63
+    DIRECTORIO_CON_ARCHIVO_COMILLAS shift and go to state 64
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_directorio_con_archivo      shift and go to state 66
+    nt_solo_directorio             shift and go to state 62
+
+state 49
+
+    (16) c_modify -> MODIFY SEPARADOR PATH FLECHA . nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+    (20) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO
+    (21) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO_COMILLAS
+    (22) nt_directorio_con_archivo -> . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    DIRECTORIO_CON_ARCHIVO shift and go to state 63
+    DIRECTORIO_CON_ARCHIVO_COMILLAS shift and go to state 64
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_directorio_con_archivo      shift and go to state 67
+    nt_solo_directorio             shift and go to state 62
+
+state 50
+
+    (15) c_add -> ADD SEPARADOR PATH FLECHA . nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA
+    (20) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO
+    (21) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO_COMILLAS
+    (22) nt_directorio_con_archivo -> . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    DIRECTORIO_CON_ARCHIVO shift and go to state 63
+    DIRECTORIO_CON_ARCHIVO_COMILLAS shift and go to state 64
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_directorio_con_archivo      shift and go to state 68
+    nt_solo_directorio             shift and go to state 62
+
+state 51
+
+    (14) c_exec -> EXEC SEPARADOR PATH FLECHA . nt_directorio_con_archivo
+    (20) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO
+    (21) nt_directorio_con_archivo -> . DIRECTORIO_CON_ARCHIVO_COMILLAS
+    (22) nt_directorio_con_archivo -> . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    DIRECTORIO_CON_ARCHIVO shift and go to state 63
+    DIRECTORIO_CON_ARCHIVO_COMILLAS shift and go to state 64
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_directorio_con_archivo      shift and go to state 69
+    nt_solo_directorio             shift and go to state 62
+
+state 52
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo . SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo . SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    SEPARADOR       shift and go to state 70
+
+
+state 53
+
+    (33) tipo_modo -> LOCAL .
+
+    SEPARADOR       reduce using rule 33 (tipo_modo -> LOCAL .)
+    CONFIGURE       reduce using rule 33 (tipo_modo -> LOCAL .)
+    CREATE          reduce using rule 33 (tipo_modo -> LOCAL .)
+    DELETE          reduce using rule 33 (tipo_modo -> LOCAL .)
+    COPY            reduce using rule 33 (tipo_modo -> LOCAL .)
+    TRANSFER        reduce using rule 33 (tipo_modo -> LOCAL .)
+    RENAME          reduce using rule 33 (tipo_modo -> LOCAL .)
+    MODIFY          reduce using rule 33 (tipo_modo -> LOCAL .)
+    ADD             reduce using rule 33 (tipo_modo -> LOCAL .)
+    BACKUP          reduce using rule 33 (tipo_modo -> LOCAL .)
+    EXEC            reduce using rule 33 (tipo_modo -> LOCAL .)
+    $end            reduce using rule 33 (tipo_modo -> LOCAL .)
+
+
+state 54
+
+    (34) tipo_modo -> CLOUD .
+
+    SEPARADOR       reduce using rule 34 (tipo_modo -> CLOUD .)
+    CONFIGURE       reduce using rule 34 (tipo_modo -> CLOUD .)
+    CREATE          reduce using rule 34 (tipo_modo -> CLOUD .)
+    DELETE          reduce using rule 34 (tipo_modo -> CLOUD .)
+    COPY            reduce using rule 34 (tipo_modo -> CLOUD .)
+    TRANSFER        reduce using rule 34 (tipo_modo -> CLOUD .)
+    RENAME          reduce using rule 34 (tipo_modo -> CLOUD .)
+    MODIFY          reduce using rule 34 (tipo_modo -> CLOUD .)
+    ADD             reduce using rule 34 (tipo_modo -> CLOUD .)
+    BACKUP          reduce using rule 34 (tipo_modo -> CLOUD .)
+    EXEC            reduce using rule 34 (tipo_modo -> CLOUD .)
+    $end            reduce using rule 34 (tipo_modo -> CLOUD .)
+
+
+state 55
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo . SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 71
+
+
+state 56
+
+    (28) nt_nombre_archivo -> NOMBRE_ARCHIVO .
+
+    SEPARADOR       reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    CONFIGURE       reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    CREATE          reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    DELETE          reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    COPY            reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    TRANSFER        reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    RENAME          reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    MODIFY          reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    ADD             reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    BACKUP          reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    EXEC            reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+    $end            reduce using rule 28 (nt_nombre_archivo -> NOMBRE_ARCHIVO .)
+
+
+state 57
+
+    (29) nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .
+
+    SEPARADOR       reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    CONFIGURE       reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    CREATE          reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    DELETE          reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    COPY            reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    TRANSFER        reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    RENAME          reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    MODIFY          reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    ADD             reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    BACKUP          reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    EXEC            reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+    $end            reduce using rule 29 (nt_nombre_archivo -> NOMBRE_ARCHIVO_COMILLAS .)
+
+
+state 58
+
+    (23) c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio . SEPARADOR NAME FLECHA nt_nombre_archivo
+    (24) c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .
+
+    SEPARADOR       shift and go to state 72
+    CONFIGURE       reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    CREATE          reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    DELETE          reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    COPY            reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    TRANSFER        reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    RENAME          reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    MODIFY          reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    ADD             reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    BACKUP          reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    EXEC            reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+    $end            reduce using rule 24 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio .)
+
+
+state 59
+
+    (26) nt_solo_directorio -> SOLO_DIRECTORIO .
+
+    SEPARADOR       reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    CONFIGURE       reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    CREATE          reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    DELETE          reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    COPY            reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    TRANSFER        reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    RENAME          reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    MODIFY          reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    ADD             reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    BACKUP          reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    EXEC            reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+    $end            reduce using rule 26 (nt_solo_directorio -> SOLO_DIRECTORIO .)
+
+
+state 60
+
+    (27) nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .
+
+    SEPARADOR       reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    CONFIGURE       reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    CREATE          reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    DELETE          reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    COPY            reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    TRANSFER        reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    RENAME          reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    MODIFY          reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    ADD             reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    BACKUP          reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    EXEC            reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+    $end            reduce using rule 27 (nt_solo_directorio -> SOLO_DIRECTORIO_COMILLAS .)
+
+
+state 61
+
+    (19) c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo . SEPARADOR TO FLECHA nt_solo_directorio
+
+    SEPARADOR       shift and go to state 73
+
+
+state 62
+
+    (22) nt_directorio_con_archivo -> nt_solo_directorio .
+
+    SEPARADOR       reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    CONFIGURE       reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    CREATE          reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    DELETE          reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    COPY            reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    TRANSFER        reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    RENAME          reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    MODIFY          reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    ADD             reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    BACKUP          reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    EXEC            reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+    $end            reduce using rule 22 (nt_directorio_con_archivo -> nt_solo_directorio .)
+
+
+state 63
+
+    (20) nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .
+
+    SEPARADOR       reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    CONFIGURE       reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    CREATE          reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    DELETE          reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    COPY            reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    TRANSFER        reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    RENAME          reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    MODIFY          reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    ADD             reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    BACKUP          reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    EXEC            reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+    $end            reduce using rule 20 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO .)
+
+
+state 64
+
+    (21) nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .
+
+    SEPARADOR       reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    CONFIGURE       reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    CREATE          reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    DELETE          reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    COPY            reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    TRANSFER        reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    RENAME          reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    MODIFY          reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    ADD             reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    BACKUP          reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    EXEC            reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+    $end            reduce using rule 21 (nt_directorio_con_archivo -> DIRECTORIO_CON_ARCHIVO_COMILLAS .)
+
+
+state 65
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo . SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+
+    SEPARADOR       shift and go to state 74
+
+
+state 66
+
+    (17) c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo . SEPARADOR NAME FLECHA nt_nombre_archivo
+
+    SEPARADOR       shift and go to state 75
+
+
+state 67
+
+    (16) c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo . SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 76
+
+
+state 68
+
+    (15) c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo . SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 77
+
+
+state 69
+
+    (14) c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .
+
+    CONFIGURE       reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    CREATE          reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    DELETE          reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    COPY            reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    TRANSFER        reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    RENAME          reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    MODIFY          reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    ADD             reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    BACKUP          reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    EXEC            reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+    $end            reduce using rule 14 (c_exec -> EXEC SEPARADOR PATH FLECHA nt_directorio_con_archivo .)
+
+
+state 70
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR . ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR . ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    ENCRYPT_LOG     shift and go to state 78
+
+
+state 71
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR . PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+
+    PATH            shift and go to state 79
+
+
+state 72
+
+    (23) c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR . NAME FLECHA nt_nombre_archivo
+
+    NAME            shift and go to state 80
+
+
+state 73
+
+    (19) c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR . TO FLECHA nt_solo_directorio
+
+    TO              shift and go to state 81
+
+
+state 74
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR . TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+
+    TO              shift and go to state 82
+
+
+state 75
+
+    (17) c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR . NAME FLECHA nt_nombre_archivo
+
+    NAME            shift and go to state 83
+
+
+state 76
+
+    (16) c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR . BODY FLECHA CADENA
+
+    BODY            shift and go to state 84
+
+
+state 77
+
+    (15) c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR . BODY FLECHA CADENA
+
+    BODY            shift and go to state 85
+
+
+state 78
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG . FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG . FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    FLECHA          shift and go to state 86
+
+
+state 79
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH . FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+
+    FLECHA          shift and go to state 87
+
+
+state 80
+
+    (23) c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME . FLECHA nt_nombre_archivo
+
+    FLECHA          shift and go to state 88
+
+
+state 81
+
+    (19) c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO . FLECHA nt_solo_directorio
+
+    FLECHA          shift and go to state 89
+
+
+state 82
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO . FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+
+    FLECHA          shift and go to state 90
+
+
+state 83
+
+    (17) c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME . FLECHA nt_nombre_archivo
+
+    FLECHA          shift and go to state 91
+
+
+state 84
+
+    (16) c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY . FLECHA CADENA
+
+    FLECHA          shift and go to state 92
+
+
+state 85
+
+    (15) c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY . FLECHA CADENA
+
+    FLECHA          shift and go to state 93
+
+
+state 86
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA . booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA . booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos
+    (35) booleanos -> . TRUE
+    (36) booleanos -> . FALSE
+
+    TRUE            shift and go to state 95
+    FALSE           shift and go to state 96
+
+    booleanos                      shift and go to state 94
+
+state 87
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA . nt_solo_directorio SEPARADOR BODY FLECHA CADENA
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_solo_directorio             shift and go to state 97
+
+state 88
+
+    (23) c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA . nt_nombre_archivo
+    (28) nt_nombre_archivo -> . NOMBRE_ARCHIVO
+    (29) nt_nombre_archivo -> . NOMBRE_ARCHIVO_COMILLAS
+
+    NOMBRE_ARCHIVO  shift and go to state 56
+    NOMBRE_ARCHIVO_COMILLAS shift and go to state 57
+
+    nt_nombre_archivo              shift and go to state 98
+
+state 89
+
+    (19) c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA . nt_solo_directorio
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_solo_directorio             shift and go to state 99
+
+state 90
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA . nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo
+    (26) nt_solo_directorio -> . SOLO_DIRECTORIO
+    (27) nt_solo_directorio -> . SOLO_DIRECTORIO_COMILLAS
+
+    SOLO_DIRECTORIO shift and go to state 59
+    SOLO_DIRECTORIO_COMILLAS shift and go to state 60
+
+    nt_solo_directorio             shift and go to state 100
+
+state 91
+
+    (17) c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA . nt_nombre_archivo
+    (28) nt_nombre_archivo -> . NOMBRE_ARCHIVO
+    (29) nt_nombre_archivo -> . NOMBRE_ARCHIVO_COMILLAS
+
+    NOMBRE_ARCHIVO  shift and go to state 56
+    NOMBRE_ARCHIVO_COMILLAS shift and go to state 57
+
+    nt_nombre_archivo              shift and go to state 101
+
+state 92
+
+    (16) c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA . CADENA
+
+    CADENA          shift and go to state 102
+
+
+state 93
+
+    (15) c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA . CADENA
+
+    CADENA          shift and go to state 103
+
+
+state 94
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos . SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos . SEPARADOR ENCRYPT_READ FLECHA booleanos
+
+    SEPARADOR       shift and go to state 104
+
+
+state 95
+
+    (35) booleanos -> TRUE .
+
+    SEPARADOR       reduce using rule 35 (booleanos -> TRUE .)
+    CONFIGURE       reduce using rule 35 (booleanos -> TRUE .)
+    CREATE          reduce using rule 35 (booleanos -> TRUE .)
+    DELETE          reduce using rule 35 (booleanos -> TRUE .)
+    COPY            reduce using rule 35 (booleanos -> TRUE .)
+    TRANSFER        reduce using rule 35 (booleanos -> TRUE .)
+    RENAME          reduce using rule 35 (booleanos -> TRUE .)
+    MODIFY          reduce using rule 35 (booleanos -> TRUE .)
+    ADD             reduce using rule 35 (booleanos -> TRUE .)
+    BACKUP          reduce using rule 35 (booleanos -> TRUE .)
+    EXEC            reduce using rule 35 (booleanos -> TRUE .)
+    $end            reduce using rule 35 (booleanos -> TRUE .)
+
+
+state 96
+
+    (36) booleanos -> FALSE .
+
+    SEPARADOR       reduce using rule 36 (booleanos -> FALSE .)
+    CONFIGURE       reduce using rule 36 (booleanos -> FALSE .)
+    CREATE          reduce using rule 36 (booleanos -> FALSE .)
+    DELETE          reduce using rule 36 (booleanos -> FALSE .)
+    COPY            reduce using rule 36 (booleanos -> FALSE .)
+    TRANSFER        reduce using rule 36 (booleanos -> FALSE .)
+    RENAME          reduce using rule 36 (booleanos -> FALSE .)
+    MODIFY          reduce using rule 36 (booleanos -> FALSE .)
+    ADD             reduce using rule 36 (booleanos -> FALSE .)
+    BACKUP          reduce using rule 36 (booleanos -> FALSE .)
+    EXEC            reduce using rule 36 (booleanos -> FALSE .)
+    $end            reduce using rule 36 (booleanos -> FALSE .)
+
+
+state 97
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio . SEPARADOR BODY FLECHA CADENA
+
+    SEPARADOR       shift and go to state 105
+
+
+state 98
+
+    (23) c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .
+
+    CONFIGURE       reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    CREATE          reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    DELETE          reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    COPY            reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    TRANSFER        reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    RENAME          reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    MODIFY          reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    ADD             reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    BACKUP          reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    EXEC            reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    $end            reduce using rule 23 (c_delete -> DELETE SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR NAME FLECHA nt_nombre_archivo .)
+
+
+state 99
+
+    (19) c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .
+
+    CONFIGURE       reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    CREATE          reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    DELETE          reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    COPY            reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    TRANSFER        reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    RENAME          reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    MODIFY          reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    ADD             reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    BACKUP          reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    EXEC            reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+    $end            reduce using rule 19 (c_copy -> COPY SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio .)
+
+
+state 100
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio . SEPARADOR MODE FLECHA tipo_modo
+
+    SEPARADOR       shift and go to state 106
+
+
+state 101
+
+    (17) c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .
+
+    CONFIGURE       reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    CREATE          reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    DELETE          reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    COPY            reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    TRANSFER        reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    RENAME          reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    MODIFY          reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    ADD             reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    BACKUP          reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    EXEC            reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+    $end            reduce using rule 17 (c_rename -> RENAME SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR NAME FLECHA nt_nombre_archivo .)
+
+
+state 102
+
+    (16) c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .
+
+    CONFIGURE       reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    CREATE          reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    DELETE          reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    COPY            reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    TRANSFER        reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    RENAME          reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    MODIFY          reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    ADD             reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    BACKUP          reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    EXEC            reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    $end            reduce using rule 16 (c_modify -> MODIFY SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+
+
+state 103
+
+    (15) c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .
+
+    CONFIGURE       reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    CREATE          reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    DELETE          reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    COPY            reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    TRANSFER        reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    RENAME          reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    MODIFY          reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    ADD             reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    BACKUP          reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    EXEC            reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+    $end            reduce using rule 15 (c_add -> ADD SEPARADOR PATH FLECHA nt_directorio_con_archivo SEPARADOR BODY FLECHA CADENA .)
+
+
+state 104
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR . ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR . ENCRYPT_READ FLECHA booleanos
+
+    ENCRYPT_READ    shift and go to state 107
+
+
+state 105
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR . BODY FLECHA CADENA
+
+    BODY            shift and go to state 108
+
+
+state 106
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR . MODE FLECHA tipo_modo
+
+    MODE            shift and go to state 109
+
+
+state 107
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ . FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ . FLECHA booleanos
+
+    FLECHA          shift and go to state 110
+
+
+state 108
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY . FLECHA CADENA
+
+    FLECHA          shift and go to state 111
+
+
+state 109
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE . FLECHA tipo_modo
+
+    FLECHA          shift and go to state 112
+
+
+state 110
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA . booleanos SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA . booleanos
+    (35) booleanos -> . TRUE
+    (36) booleanos -> . FALSE
+
+    TRUE            shift and go to state 95
+    FALSE           shift and go to state 96
+
+    booleanos                      shift and go to state 113
+
+state 111
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA . CADENA
+
+    CADENA          shift and go to state 114
+
+
+state 112
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA . tipo_modo
+    (33) tipo_modo -> . LOCAL
+    (34) tipo_modo -> . CLOUD
+
+    LOCAL           shift and go to state 53
+    CLOUD           shift and go to state 54
+
+    tipo_modo                      shift and go to state 115
+
+state 113
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos . SEPARADOR LLAVE FLECHA CADENA
+    (31) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .
+
+    SEPARADOR       shift and go to state 116
+    CONFIGURE       reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    CREATE          reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    DELETE          reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    COPY            reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    TRANSFER        reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    RENAME          reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    MODIFY          reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    ADD             reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    BACKUP          reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    EXEC            reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+    $end            reduce using rule 31 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos .)
+
+
+state 114
+
+    (25) c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .
+
+    CONFIGURE       reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    CREATE          reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    DELETE          reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    COPY            reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    TRANSFER        reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    RENAME          reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    MODIFY          reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    ADD             reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    BACKUP          reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    EXEC            reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+    $end            reduce using rule 25 (c_create -> CREATE SEPARADOR NAME FLECHA nt_nombre_archivo SEPARADOR PATH FLECHA nt_solo_directorio SEPARADOR BODY FLECHA CADENA .)
+
+
+state 115
+
+    (18) c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .
+
+    CONFIGURE       reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    CREATE          reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    DELETE          reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    COPY            reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    TRANSFER        reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    RENAME          reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    MODIFY          reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    ADD             reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    BACKUP          reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    EXEC            reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+    $end            reduce using rule 18 (c_transfer -> TRANSFER SEPARADOR FROM FLECHA nt_directorio_con_archivo SEPARADOR TO FLECHA nt_solo_directorio SEPARADOR MODE FLECHA tipo_modo .)
+
+
+state 116
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR . LLAVE FLECHA CADENA
+
+    LLAVE           shift and go to state 117
+
+
+state 117
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE . FLECHA CADENA
+
+    FLECHA          shift and go to state 118
+
+
+state 118
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA . CADENA
+
+    CADENA          shift and go to state 119
+
+
+state 119
+
+    (30) c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .
+
+    CONFIGURE       reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    CREATE          reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    DELETE          reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    COPY            reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    TRANSFER        reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    RENAME          reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    MODIFY          reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    ADD             reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    BACKUP          reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    EXEC            reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+    $end            reduce using rule 30 (c_configure -> CONFIGURE SEPARADOR TYPE FLECHA tipo_modo SEPARADOR ENCRYPT_LOG FLECHA booleanos SEPARADOR ENCRYPT_READ FLECHA booleanos SEPARADOR LLAVE FLECHA CADENA .)
+

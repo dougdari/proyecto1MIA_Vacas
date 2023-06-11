@@ -45,6 +45,11 @@ def generar_pantalla_login():
     #campo_contrasenia.grid(row=4, column=3)
     #campo_contrasenia.pack()
 
+    #print("cadena para analizar")
+    #entrada = "exec -path->/home/Desktop/calificacion.mia modify -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\" add -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\""
+    #resultado = analizadorEntrada.parser.parse(entrada, lexer=analizadorEntrada.lexer)
+    #print("Resultado: {}".format(resultado))
+
     def ir_a_pantalla_principal():
         resv = logL.verificar(campo_usuario.get(),campo_contrasenia.get())
         #Agregar en esta area el codigo o funcion para verificar si la contrasenia es valida
@@ -475,7 +480,7 @@ pantalla1.geometry(f"{872}x{600}+{coordenada_x}+{coordenada_y}")
 
 def main():  
 
-    generar_pantalla_login()
+    #generar_pantalla_login()
     pantalla1.mainloop()
 
     
