@@ -67,6 +67,21 @@ def generar_pantalla_login():
     #boton.grid(row=6, column=3)
     #boton.pack()
 
+def comando_EXEC(path):
+
+    entrada = open(path,"r", encoding="utf-8")
+    comandos = entrada.read()
+
+    #entrada = "exec -path->/home/Desktop/calificacion.mia modify -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\" add -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\""
+    resultado = analizadorEntrada.parser.parse(comandos, lexer=analizadorEntrada.lexer)
+    print(resultado)
+
+    for comando in resultado:
+        print(comando)
+
+    entrada.close()
+    
+
 def generar_pantall_comando_exec():
 
     pantalla_comando_exec = tk.Toplevel(pantalla1)
@@ -88,9 +103,10 @@ def generar_pantall_comando_exec():
     campo_path.place(x=155, y=55)
 
     def obtener_parametros_exec():
+        
         path =  campo_path.get()
-        print(path)
-    
+        comando_EXEC(path)
+
     boton_add = tk.Button(pantalla_comando_exec, command=obtener_parametros_exec, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
 

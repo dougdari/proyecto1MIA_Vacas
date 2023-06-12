@@ -17,11 +17,9 @@ tokens = (
     'CLOUD',
     'TO',
     'DIRECTORIO_CON_ARCHIVO',
-    'DIRECTORIO_CON_ARCHIVO_COMILLAS',
     'NOMBRE_ARCHIVO',
     'NOMBRE_ARCHIVO_COMILLAS',
     'SOLO_DIRECTORIO',
-    'SOLO_DIRECTORIO_COMILLAS',
     'FROM',
     'MODE',
     'BODY',
@@ -48,18 +46,16 @@ t_MODIFY = r'(M|m)(O|o)(D|d)(I|i)(F|f)(Y|y)'
 t_ADD = r'(A|a)(D|d)(D|d)'
 t_BACKUP = r'(B|b)(A|a)(C|c)(K|k)(U|u)(P|p)'
 t_EXEC = r'(E|e)(X|x)(E|e)(C|c)'
-t_LOCAL = r'(L|l)(O|o)(C|c)(A|a)(L|l)'
-t_CLOUD = r'(C|c)(L|l)(O|o)(U|u)(D|d)'
+t_LOCAL = r'((L|l)(O|o)(C|c)(A|a)(L|l))|(\"(L|l)(O|o)(C|c)(A|a)(L|l)\")'
+t_CLOUD = r'((C|c)(L|l)(O|o)(U|u)(D|d))|(\"(C|c)(L|l)(O|o)(U|u)(D|d)\")'
 
 t_TO = r'to'
-t_DIRECTORIO_CON_ARCHIVO = r'[\/]([a-zA-Z0-9_-]+[\/])*[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+'
-t_DIRECTORIO_CON_ARCHIVO_COMILLAS = r'\"[\/]([a-zA-Z0-9_ -]+[\/])*[a-zA-Z0-9_ -]+\.[a-zA-Z0-9_-]+\"'
+t_DIRECTORIO_CON_ARCHIVO = r'[\/](([a-zA-Z0-9_-]+|\"[a-zA-Z0-9_ -]+\")[\/])*(([a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)|(\"[a-zA-Z0-9_ -]+\.[a-zA-Z0-9_-]+\"))'
 
 t_NOMBRE_ARCHIVO = r'[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+'
 t_NOMBRE_ARCHIVO_COMILLAS = r'\"[a-zA-Z0-9 _-]+\.[a-zA-Z0-9_-]+\"'
 
-t_SOLO_DIRECTORIO = r'[\/]([a-zA-Z0-9_-]+[\/])*'
-t_SOLO_DIRECTORIO_COMILLAS = r'\"[\/]([a-zA-Z0-9 _-]+[\/])*\"'
+t_SOLO_DIRECTORIO = r'[\/]((([a-zA-Z0-9_-]+)|(\"[a-zA-Z0-9_ -]+\"))[\/])*'
 
 t_FROM = r'from'
 t_PATH = r'path'
@@ -91,7 +87,7 @@ def p_inicio(p):
         inicio : l_comando
     '''
 
-    print(comandos)
+    p[0] = comandos
 
 def p_l_comando(p):
 
@@ -166,7 +162,6 @@ def p_c_copy(p):
 def p_nt_directorio_con_archivo(p):
     '''
         nt_directorio_con_archivo : DIRECTORIO_CON_ARCHIVO
-                                 | DIRECTORIO_CON_ARCHIVO_COMILLAS
                                  | nt_solo_directorio
     '''
     p[0] = str(p[1])
@@ -191,7 +186,6 @@ def p_c_create(p):
 def p_nt_solo_directorio(p):
     '''
         nt_solo_directorio : SOLO_DIRECTORIO
-                           | SOLO_DIRECTORIO_COMILLAS
     '''
     p[0] = str(p[1])
 
@@ -239,6 +233,8 @@ def p_booleanos(p):
 
 def p_error(p):
     print("Error sintactico")
+    print("ENTRADA: {}".format(p))
+
 
 
 parser = yacc.yacc()
