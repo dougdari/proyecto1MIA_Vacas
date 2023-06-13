@@ -1,4 +1,5 @@
 import LoginLogic as Lg
+import FuncionesLocal as LocalOptions
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
@@ -7,6 +8,8 @@ import analizadorEntrada
 
 logL = Lg.LoginLg()
 logL.abrirarchivo()
+
+localOp = LocalOptions.FLocal()
 
 coordenada_x = 0
 coordenada_y = 0
@@ -207,7 +210,7 @@ def generar_pantall_comando_rename():
     def obtener_parametros_rename():
         path =  campo_path.get()
         name = campo_name.get()
-        print(path + " " + name)
+        localOp.comandoRenombrar(path,name)
     
     boton_add = tk.Button(pantalla_comando_rename, command=obtener_parametros_rename, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -383,7 +386,7 @@ def generar_pantalla_comando_delete():
     def obtener_parametros_delete():
         path = campo_path.get()
         name = campo_name.get()
-        print(path + " " + name)
+        localOp.comandoEliminar(name,path)
 
     boton_add = tk.Button(pantalla_comando_delete, command=obtener_parametros_delete, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -425,7 +428,7 @@ def generar_pantalla_comando_create():
         name =  campo_name.get()
         body = campo_body.get()
         path = campo_path.get()
-        print(name + " " + body + " " + path)
+        localOp.comandoCrear(name,body,path)
 
     boton_add = tk.Button(pantalla_comando_create, command=obtener_parametros_create, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)

@@ -5,10 +5,10 @@ create -name->"prueba 2.txt" -path->/"carpeta 2"/ -body->"Este es el contenido d
 archivo 2"
 delete -path->/carpeta1/ -name->prueba1.txt
 
-delete -path->"/carpeta 2/"
-copy -from->/carpeta1/prueba1.txt -to->"/carpeta 2/"
+delete -path->/"carpeta 2"/
+copy -from->/carpeta1/prueba1.txt -to->/"carpeta 2"/
 
-copy -from->"/carpeta 2/" -to->/carpeta1/
+copy -from->/"carpeta 2"/ -to->/carpeta1/
 
 transfer -from->/carpeta1/prueba1.txt -to->/"carpeta 2"/ -mode->"local"
 transfer -from->/"carpeta 2"/ -to->/carpeta1/ -mode->"cloud"
