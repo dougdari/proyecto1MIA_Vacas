@@ -29,7 +29,19 @@ class FLocal:
                 break
         if os.path.exists("."+ruta):
             os.rename("."+ruta,rta)
-        
+    
+    def comandoModificar(self,ruta,nuevo_contenido):
+        if os.path.exists("."+ruta):
+            f = open("."+ruta,"w")
+            f.write(nuevo_contenido)
+            f.close()
+    
+    def comandoAgregar(self,ruta,contenido_extra):
+        if os.path.exists("."+ruta):
+            f = open("."+ruta,"a")
+            f.write(contenido_extra)
+            f.close()
+
 
     def crear_ruta(self,ruta):
         partes = ruta.split("/")

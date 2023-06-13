@@ -142,7 +142,7 @@ def generar_pantall_comando_add():
     def obtener_parametros_add():
         path =  campo_path.get()
         body = campo_body.get()
-        print(path + " " + body)
+        localOp.comandoAgregar(path,body)
     
     boton_add = tk.Button(pantalla_comando_add, command=obtener_parametros_add, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -176,7 +176,7 @@ def generar_pantall_comando_modify():
     def obtener_parametros_modify():
         path =  campo_path.get()
         body = campo_body.get()
-        print(path + " " + body)
+        localOp.comandoModificar(path,body)
     
     boton_add = tk.Button(pantalla_comando_modify, command=obtener_parametros_modify, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
