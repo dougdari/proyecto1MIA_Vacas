@@ -1,6 +1,8 @@
 import os.path
 import os
 import regex as re
+import shutil
+
 class FLocal:
     def __init__(self):
         pass
@@ -16,6 +18,19 @@ class FLocal:
         if os.path.exists("."+ruta+nombre):
             os.remove("."+ruta+nombre)
     
+    def comandoCopiar(self,rutaFrom,rutaTo):
+        pass
+    
+    def comandoTransferir(self,rutaFrom,rutaTo,Modo):
+        if os.path.isfile(rutaFrom):
+        #En caso de ser directorio de archivo
+            shutil.move(rutaFrom,rutaTo)
+        #En caso de ser directorio de carpeta
+        else:
+            #Se revisa cada directorio con sus respectivos archivos o subcarpetas
+            print("En carpetas")
+        pass
+
     def comandoRenombrar(self,ruta,nuevo_nombre):
         #Se reestructura la ruta para el nuevo nombre
         partes = ruta.split("/")
@@ -53,6 +68,8 @@ class FLocal:
                 os.makedirs(rta)
 
 fun = FLocal()
+#fun.comandoCopiar("./carpeta1/","./carpeta2/")
+fun.comandoTransferir("./carpeta1/","","")
 #FORMATO DE ENTRADA
 #fun.comandoCrear("Archivo1.txt","Archivo de Prueba","carpeta1")
 #fun.crear_ruta("/carpeta1/carpeta2/carpeta3/archivo.txt")
