@@ -24,7 +24,3 @@ class LoginLg:
             i=i+2
         return flagC
 
-
-l = LoginLg()
-l.abrirarchivo()
-l.verificar('usuario1','junio1234')
