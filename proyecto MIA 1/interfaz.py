@@ -6,8 +6,8 @@ from tkinter import ttk
 
 import analizadorEntrada
 
-logL = Lg.LoginLg()
-logL.abrirarchivo()
+#logL = Lg.LoginLg()
+#logL.abrirarchivo()
 
 localOp = LocalOptions.FLocal()
 
