@@ -176,6 +176,7 @@ class FLocal:
 
                     nueva_ruta_nombre_y_ruta_nuevo_archivo = os.path.join(destino, nuevo_nombre_carpeta)
                     shutil.copytree(origen, nueva_ruta_nombre_y_ruta_nuevo_archivo)
+                    shutil.rmtree(origen)
 
                 else:
 
@@ -184,6 +185,7 @@ class FLocal:
                     print(origen)
                     print(destino)
                     shutil.copytree(origen, str(destino) + nombre_carpeta)
+                    shutil.rmtree(origen)
 
             else:
                 print("Ruta destino no existe")
@@ -225,11 +227,13 @@ class FLocal:
                         
                         destino = os.path.join(destino, nuevo_nombre_archivo)
                         shutil.copy2(origen, destino)
+                        os.remove(origen)
                     
                     else:
         
                         nueva_ruta_nombre_y_ruta_nuevo_archivo = os.path.join(destino, nombre_archivo)
                         shutil.copy2(origen, nueva_ruta_nombre_y_ruta_nuevo_archivo)
+                        os.remove(origen)
             
                 else:
                     output_bt = "El archivo o directorio a transferir no existe"
@@ -273,7 +277,6 @@ class FLocal:
 
                     nueva_ruta_nombre_y_ruta_nuevo_archivo = os.path.join(destino, nuevo_nombre_carpeta)
                     shutil.copytree(origen, nueva_ruta_nombre_y_ruta_nuevo_archivo)
-                    shutil.rmtree(origen)
 
                 else:
 
@@ -282,7 +285,6 @@ class FLocal:
                     print(origen)
                     print(destino)
                     shutil.copytree(origen, str(destino) + nombre_carpeta)
-                    shutil.rmtree(origen)
 
             else:
                 print("Ruta destino no existe")
@@ -320,13 +322,11 @@ class FLocal:
                         
                         destino = os.path.join(destino, nuevo_nombre_archivo)
                         shutil.copy2(origen, destino)
-                        os.remove(origen)
 
                     else:
         
                         nueva_ruta_nombre_y_ruta_nuevo_archivo = os.path.join(destino, nombre_archivo)
                         shutil.copy2(origen, nueva_ruta_nombre_y_ruta_nuevo_archivo)
-                        os.remove(origen)
             
                 else:
                     output_bt = "El archivo o directorio a copiar no existe"
