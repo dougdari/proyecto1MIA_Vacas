@@ -456,8 +456,9 @@ def generar_pantalla_principal():
     entrada.focus() 
 
     def ejetular_linea_entrada():
+        analizadorEntrada.comandos = []
         resultado = analizadorEntrada.parser.parse(entrada.get(), lexer=analizadorEntrada.lexer)
-        print(resultado)
+        localOp.ejecutarComando(resultado)
 
     boton_ejectuar_linea= tk.Button(pantalla, command=ejetular_linea_entrada, text="Ejecutar", width=10)
     boton_ejectuar_linea.place(x = 513, y =543)

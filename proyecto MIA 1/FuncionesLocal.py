@@ -3,12 +3,45 @@ import os
 import regex as re
 import shutil
 from shutil import rmtree
+import analizadorEntrada
 
 class FLocal:
     directorio_archivo = "./Archivo"
     def __init__(self):
         pass
 
+    def ejecutarComando(self,arreglo):
+        if(arreglo[0][0].lower() == "configure"):
+            print("Configurar")
+        elif(arreglo[0][0].lower() == "create"):
+            self.comandoCrear(arreglo[0][1],arreglo[0][3],arreglo[0][2])
+        elif(arreglo[0][0].lower() == "delete"):
+            self.comandoEliminar(arreglo[0][1],arreglo[0][2])
+        elif(arreglo[0][0].lower() == "copy"):
+            ruta_origen1 = self.limpiarRuta(arreglo[0][1])
+            ruta_destino1 = self.limpiarRuta(arreglo[0][2])
+            self.copiar_archivos_directorio(ruta_origen1,ruta_destino1)
+        elif(arreglo[0][0].lower() == "transfer"):
+            ruta_origen = self.limpiarRuta(arreglo[0][1])
+            ruta_destino = self.limpiarRuta(arreglo[0][2])
+            self.transferir_archivos_directorio(ruta_origen,ruta_destino,arreglo[0][3])
+        elif(arreglo[0][0].lower() == "rename"):
+            self.comandoRenombrar(arreglo[0][1],arreglo[0][2])
+        elif(arreglo[0][0].lower() == "modify"):
+            self.comandoModificar(arreglo[0][1],arreglo[0][2])
+        elif(arreglo[0][0].lower() == "add"):
+            self.comandoAgregar(arreglo[0][1],arreglo[0][2])
+        elif(arreglo[0][0].lower() == "backup"):
+            print("Respaldo")
+        elif(arreglo[0][0].lower() == "exec"):
+            self.ejecutarArchivo(arreglo[0][1])
+
+    def ejecutarArchivo(self,ruta):
+        archivo = open("."+ruta,"r")
+        for linea in archivo:
+            analizadorEntrada.comandos = []
+            self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer))
+            
     def comandoCrear(self,nombre,contenido,ruta):
         #Se limpia la ruta en caso alguna parte tenga doble comilla
         nueva_ruta = self.limpiarRuta(ruta)
@@ -26,7 +59,6 @@ class FLocal:
         nueva_ruta = self.limpiarRuta(ruta)
         #Se unen todos los parametros para crear el directorio
         ruta_eliminar = nueva_ruta+nombre
-        print(ruta_eliminar)
         #Se verifica la existencia de la ruta a eliminar
         if os.path.exists(ruta_eliminar):
             #Se determina si el directorio corresponde a un archivo para elegir como elimnar dicho directorio
@@ -78,7 +110,7 @@ class FLocal:
             if not os.path.exists(rta) and not re.search(".*\.txt",x):
                 os.makedirs(rta)
 
-    def transferir_archivos_directorio(self, origen, destino):
+    def transferir_archivos_directorio(self, origen, destino,modo):
 
         if os.path.isdir(origen):
             if os.path.isdir(destino):
@@ -170,7 +202,7 @@ class FLocal:
                 print("directorio creado")
                 self.transferir_archivos_directorio(origen,destino)
         else:
-            print("No encontro nada ni directorio ni archivo")
+            print("No se encontró nada en el directorio: "+origen+"para mover a: "+destino)
 
     def copiar_archivos_directorio(self, origen, destino):
 
@@ -262,7 +294,7 @@ class FLocal:
             else:
                 print("La ruta destino no exite")
         else:
-            print("No encontro nada ni directorio ni archivo")
+            print("No se encontró nada en el directorio: "+origen+"para mover a: "+destino)
 
     def limpiarRuta(self,ruta):
         partes = ruta.split("/")
@@ -276,7 +308,7 @@ class FLocal:
             else:
                 rtalimpia = rtalimpia+x
         return rtalimpia
-
+    
 fun = FLocal()
 #fun.comandoCopiar("./carpeta1/","./carpeta2/")
 #fun.comandoTransferir("./carpeta1/","","")
