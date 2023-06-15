@@ -451,9 +451,16 @@ def generar_pantalla_principal():
     etiqueta_entrada = tk.Label(pantalla, text="Ingrese un comando:")
     etiqueta_entrada.place(x=50, y=530)
 
-    entrada = tk.Entry(pantalla, width=90)
+    entrada = tk.Entry(pantalla, width=75)
     entrada.place(x=47, y=550)
     entrada.focus() 
+
+    def ejetular_linea_entrada():
+        resultado = analizadorEntrada.parser.parse(entrada.get(), lexer=analizadorEntrada.lexer)
+        print(resultado)
+
+    boton_ejectuar_linea= tk.Button(pantalla, command=ejetular_linea_entrada, text="Ejecutar", width=10)
+    boton_ejectuar_linea.place(x = 513, y =543)
 
     boton_configure = tk.Button(pantalla, command=generar_pantalla_comando_configure, text="Configure", width=30)
     boton_configure.place(x = 610, y = 48)
