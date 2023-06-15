@@ -241,7 +241,7 @@ def generar_pantall_comando_transfer():
     campo_to = tk.Entry(pantalla_comando_transfer,  width=45)
     campo_to.place(x=155, y=105)
 
-    opciones_valor_booleano = ["true","false"]
+    opciones_valor_booleano = ["Local","Cloud"]
 
     etiqueta_campo_mode = tk.Label(pantalla_comando_transfer, text="-mode (*)")
     etiqueta_campo_mode.place(x=50, y=155)
@@ -251,9 +251,10 @@ def generar_pantall_comando_transfer():
 
     def obtener_parametros_transfer():
         from_ =  campo_from.get()
-        to = campo_to.get()
+        to_ = campo_to.get()
         mode = campo_mode.get()
-        print(from_ + " " + to + " " + mode)
+        print(from_ + " " + to_ + " " + mode)
+        localOp.transferir_archivos_directorio(from_,to_)
 
     boton_add = tk.Button(pantalla_comando_transfer, command=obtener_parametros_transfer, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -343,16 +344,17 @@ def generar_pantalla_comando_copy():
     campo_path = tk.Entry(pantalla_comando_copy, width=45)
     campo_path.place(x=155, y=55)
 
-    etiqueta_campo_name = tk.Label(pantalla_comando_copy, text="-to (*)")
-    etiqueta_campo_name.place(x=50, y=105)
+    etiqueta_campo_destino = tk.Label(pantalla_comando_copy, text="-to (*)")
+    etiqueta_campo_destino.place(x=50, y=105)
 
-    campo_name = tk.Entry(pantalla_comando_copy, width=45)
-    campo_name.place(x=155, y=105)
+    campo_destino = tk.Entry(pantalla_comando_copy, width=45)
+    campo_destino.place(x=155, y=105)
 
     def obtener_parametros_copy():
         path = campo_path.get()
-        name = campo_name.get()
+        name = campo_destino.get()
         print(path + " " + name)
+        localOp.copiar_archivos_directorio(path,name)
 
     boton_add = tk.Button(pantalla_comando_copy, command=obtener_parametros_copy, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
