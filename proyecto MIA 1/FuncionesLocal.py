@@ -2,66 +2,78 @@ import os.path
 import os
 import regex as re
 import shutil
+from shutil import rmtree
 
 class FLocal:
+    directorio_archivo = "./Archivo"
     def __init__(self):
         pass
 
     def comandoCrear(self,nombre,contenido,ruta):
-        self.crear_ruta(ruta)
-        if not os.path.exists("."+ruta+nombre):
-            f = open("."+ruta+nombre,"x")
-            f.write(contenido)
-            f.close()
+        #Se limpia la ruta en caso alguna parte tenga doble comilla
+        nueva_ruta = self.limpiarRuta(ruta)
+        #Se explora la ruta para crear las carpetas necesarias
+        self.crear_ruta(nueva_ruta)
+        #Se crea el archivo y se detecta si no existe uno con nombre igual
+        if os.path.exists(nueva_ruta+nombre):
+            nombre = nombre+"(1)"
+        f = open(nueva_ruta+nombre,"x")
+        f.write(contenido)
+        f.close()
     
     def comandoEliminar(self,nombre,ruta):
-        if os.path.exists("."+ruta+nombre):
-            os.remove("."+ruta+nombre)
-    
-    def comandoCopiar(self,rutaFrom,rutaTo):
-        pass
-    
-    def comandoTransferir(self,rutaFrom,rutaTo,Modo):
-        if os.path.isfile(rutaFrom):
-        #En caso de ser directorio de archivo
-            shutil.move(rutaFrom,rutaTo)
-        #En caso de ser directorio de carpeta
-        else:
-            #Se revisa cada directorio con sus respectivos archivos o subcarpetas
-            print("En carpetas")
-        pass
+        #Se limpia la ruta en caso alguna parte tenga doble comilla
+        nueva_ruta = self.limpiarRuta(ruta)
+        #Se unen todos los parametros para crear el directorio
+        ruta_eliminar = nueva_ruta+nombre
+        print(ruta_eliminar)
+        #Se verifica la existencia de la ruta a eliminar
+        if os.path.exists(ruta_eliminar):
+            #Se determina si el directorio corresponde a un archivo para elegir como elimnar dicho directorio
+            if os.path.isfile(ruta_eliminar):
+                os.remove(ruta_eliminar)
+            else:
+                rmtree(ruta_eliminar)
 
     def comandoRenombrar(self,ruta,nuevo_nombre):
+        #Se limpia la ruta en caso alguna parte tenga doble comilla
+        nueva_ruta = self.limpiarRuta(ruta)
         #Se reestructura la ruta para el nuevo nombre
-        partes = ruta.split("/")
-        partes.remove("")
-        rta = "./"
-        for x in partes:
+        partes = nueva_ruta.split("/")
+        nueva_partes = [x for x in partes if x != '']
+        rta = ""
+        for x in nueva_partes:
             if not re.search(".*\.txt",x):
-                rta+=rta+x+"/"
+                rta=rta+x+"/"
             else:
                 rta+=nuevo_nombre
                 break
-        if os.path.exists("."+ruta):
-            os.rename("."+ruta,rta)
+        #Se comparan las rutas para verificar que no se repitan
+        if nueva_ruta != rta:
+            if os.path.exists(nueva_ruta):
+                os.rename(nueva_ruta,rta)
     
     def comandoModificar(self,ruta,nuevo_contenido):
-        if os.path.exists("."+ruta):
-            f = open("."+ruta,"w")
+        #Se limpia la ruta en caso alguna parte tenga doble comilla
+        nueva_ruta = self.limpiarRuta(ruta)
+        if os.path.exists(nueva_ruta):
+            f = open(nueva_ruta,"w")
             f.write(nuevo_contenido)
             f.close()
     
     def comandoAgregar(self,ruta,contenido_extra):
-        if os.path.exists("."+ruta):
-            f = open("."+ruta,"a")
+        #Se limpia la ruta en caso alguna parte tenga doble comilla
+        nueva_ruta = self.limpiarRuta(ruta)
+        if os.path.exists(nueva_ruta):
+            f = open(nueva_ruta,"a")
             f.write(contenido_extra)
             f.close()
 
     def crear_ruta(self,ruta):
         partes = ruta.split("/")
-        partes.remove("")
-        rta = "./"
-        for x in partes:
+        nueva_partes = [x for x in partes if x != '']
+        rta = ""
+        for x in nueva_partes:
             rta=rta+x+"/"
             if not os.path.exists(rta) and not re.search(".*\.txt",x):
                 os.makedirs(rta)
@@ -252,10 +264,22 @@ class FLocal:
         else:
             print("No encontro nada ni directorio ni archivo")
 
+    def limpiarRuta(self,ruta):
+        partes = ruta.split("/")
+        nueva_partes = [x for x in partes if x != '']
+        rtalimpia = self.directorio_archivo+"/"
+        for x in nueva_partes:
+            if "\"" in x:
+                x = x.replace('\"','')
+            if not re.search(".*\.txt",x):
+                rtalimpia = rtalimpia+x+"/"
+            else:
+                rtalimpia = rtalimpia+x
+        return rtalimpia
 
 fun = FLocal()
 #fun.comandoCopiar("./carpeta1/","./carpeta2/")
-fun.comandoTransferir("./carpeta1/","","")
+#fun.comandoTransferir("./carpeta1/","","")
 #FORMATO DE ENTRADA
 #fun.comandoCrear("Archivo1.txt","Archivo de Prueba","carpeta1")
 #fun.crear_ruta("/carpeta1/carpeta2/carpeta3/archivo.txt")

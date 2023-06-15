@@ -253,8 +253,7 @@ def generar_pantall_comando_transfer():
         from_ =  campo_from.get()
         to_ = campo_to.get()
         mode = campo_mode.get()
-        print(from_ + " " + to_ + " " + mode)
-        localOp.transferir_archivos_directorio(from_,to_)
+        localOp.transferir_archivos_directorio("./Archivo"+from_,to_)
 
     boton_add = tk.Button(pantalla_comando_transfer, command=obtener_parametros_transfer, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -354,7 +353,7 @@ def generar_pantalla_comando_copy():
         path = campo_path.get()
         name = campo_destino.get()
         print(path + " " + name)
-        localOp.copiar_archivos_directorio(path,name)
+        localOp.copiar_archivos_directorio("./Archivo"+path,name)
 
     boton_add = tk.Button(pantalla_comando_copy, command=obtener_parametros_copy, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
