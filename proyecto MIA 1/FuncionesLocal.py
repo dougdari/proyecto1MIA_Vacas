@@ -6,45 +6,63 @@ from shutil import rmtree
 import analizadorEntrada
 from datetime import date
 from datetime import datetime
+import Encriptador as enc
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import ttk
 
 class FLocal:
+    contenido_output = ""
     directorio_archivo = "./Archivo"
+    encrip = enc.AESencriptador()
+
     def __init__(self):
         pass
+    
+    def getOutput(self):
+        return self.contenido_output+"\n"
 
-    def ejecutarComando(self,arreglo):
-        if(arreglo[0][0].lower() == "configure"):
-            print("Configurar")
-        elif(arreglo[0][0].lower() == "create"):
-            self.comandoCrear(arreglo[0][1],arreglo[0][3],arreglo[0][2])
+    def ejecutarComando(self,arreglo,area_output):
+        if(arreglo[0][0].lower() == "create"):
+            self.comandoCrear(arreglo[0][1],arreglo[0][3],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "delete"):
-            self.comandoEliminar(arreglo[0][1],arreglo[0][2])
+            self.comandoEliminar(arreglo[0][1],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "copy"):
             ruta_origen1 = self.limpiarRuta(arreglo[0][1])
             ruta_destino1 = self.limpiarRuta(arreglo[0][2])
-            self.copiar_archivos_directorio(ruta_origen1,ruta_destino1)
+            self.copiar_archivos_directorio(ruta_origen1,ruta_destino1,area_output)
         elif(arreglo[0][0].lower() == "transfer"):
             ruta_origen = self.limpiarRuta(arreglo[0][1])
             ruta_destino = self.limpiarRuta(arreglo[0][2])
-            self.transferir_archivos_directorio(ruta_origen,ruta_destino,arreglo[0][3])
+            self.transferir_archivos_directorio(ruta_origen,ruta_destino,arreglo[0][3],area_output)
         elif(arreglo[0][0].lower() == "rename"):
-            self.comandoRenombrar(arreglo[0][1],arreglo[0][2])
+            self.comandoRenombrar(arreglo[0][1],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "modify"):
-            self.comandoModificar(arreglo[0][1],arreglo[0][2])
+            self.comandoModificar(arreglo[0][1],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "add"):
-            self.comandoAgregar(arreglo[0][1],arreglo[0][2])
+            self.comandoAgregar(arreglo[0][1],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "backup"):
             print("Respaldo")
         elif(arreglo[0][0].lower() == "exec"):
-            self.ejecutarArchivo(arreglo[0][1])
+            self.ejecutarArchivo(arreglo[0][1],area_output)
 
-    def ejecutarArchivo(self,ruta):
+    def ejecutarArchivo(self,ruta,area_output):
         archivo = open("."+ruta,"r")
-        for linea in archivo:
-            analizadorEntrada.comandos = []
-            self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer))
+        #Se extrae la linea de configuración
+        config_parametros = archivo.readline().split(" ")
+        if(config_parametros[3].split("->")[1] == "true"):
+            llave = config_parametros[4].split("->")[1]
+            llave = llave.replace("\n","")
+            lista_comandos = self.encrip.desencriptar(str(archivo.read().replace("\n","")),llave).decode("utf-8","ignore")
+            for comando in lista_comandos.splitlines():
+                analizadorEntrada.comandos = []
+                self.ejecutarComando(analizadorEntrada.parser.parse(comando, lexer=analizadorEntrada.lexer),area_output)
+        else:
+            for linea in archivo:
+                analizadorEntrada.comandos = []
+                self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer),area_output)
             
-    def comandoCrear(self,nombre,contenido,ruta):
+    def comandoCrear(self,nombre,contenido,ruta,area_output):
         #Se limpia la ruta en caso alguna parte tenga doble comilla
         nueva_ruta = self.limpiarRuta(ruta)
         print(ruta)
@@ -59,9 +77,9 @@ class FLocal:
         #Se crea el contenido para la bitacora
         input_bt = "create -name:"+nombre+" -path:"+ruta+" -body:"+contenido
         output_bt = "Archivo Creado Exitosamente"
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
 
-    def comandoEliminar(self,nombre,ruta):
+    def comandoEliminar(self,nombre,ruta,area_output):
         input_bt = "delete -name:"+nombre+" -path:"+ruta
         output_bt = "Archivo Eliminado Exitosamente"
         #Se limpia la ruta en caso alguna parte tenga doble comilla
@@ -80,9 +98,9 @@ class FLocal:
                 output_bt = "El Archivo No Existe"
         else:
             output_bt = "El Directorio No Existe"
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
         
-    def comandoRenombrar(self,ruta,nuevo_nombre):
+    def comandoRenombrar(self,ruta,nuevo_nombre,area_output):
         input_bt = "rename -path:"+ruta+" -name:"+nuevo_nombre
         output_bt = "Archivo Renombrado Exitosamente"
         #Se limpia la ruta en caso alguna parte tenga doble comilla
@@ -111,9 +129,9 @@ class FLocal:
                 output_bt = "Imposible Renombrar, Existe un Archivo con el mismo nombre"
         else:
             output_bt = "Imposible de Renombrar, El Directorio o Archivo No Existe"
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
         
-    def comandoModificar(self,ruta,nuevo_contenido):
+    def comandoModificar(self,ruta,nuevo_contenido,area_output):
         input_bt = "rename -path:"+ruta+" -body:"+nuevo_contenido
         output_bt = "Archivo Modificado Exitosamente"
         #Se limpia la ruta en caso alguna parte tenga doble comilla
@@ -124,9 +142,9 @@ class FLocal:
             f.close()
         else:
             output_bt = "El Directorio o Archivo No Existe"
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
     
-    def comandoAgregar(self,ruta,contenido_extra):
+    def comandoAgregar(self,ruta,contenido_extra,area_output):
         input_bt = "add -path:"+ruta+" -body:"+contenido_extra
         output_bt = "Contenido Agregado al Archivo Exitosamente"
         #Se limpia la ruta en caso alguna parte tenga doble comilla
@@ -137,7 +155,7 @@ class FLocal:
             f.close()
         else:
             output_bt = "El Directorio o Archivo No Existe"
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
         
     def crear_ruta(self,ruta):
         partes = ruta.split("/")
@@ -148,7 +166,7 @@ class FLocal:
             if not os.path.exists(rta) and not re.search(".*\.txt",x):
                 os.makedirs(rta)
 
-    def transferir_archivos_directorio(self, origen, destino,modo):
+    def transferir_archivos_directorio(self, origen, destino,modo,area_output):
         input_bt = "transfer -from:"+origen+" -to:"+destino
         output_bt = "Archivo o Carpeta Transferido Exitosamente"
         if os.path.isdir(origen):
@@ -245,9 +263,9 @@ class FLocal:
                 self.transferir_archivos_directorio(origen,destino)
         else:
             output_bt ="No se encontró nada en el directorio: "+origen+"para mover a: "+destino
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
 
-    def copiar_archivos_directorio(self, origen, destino):
+    def copiar_archivos_directorio(self, origen, destino,area_output):
         input_bt = "copy -from:"+origen+" -to:"+destino
         output_bt = "Archivo o Carpeta copiado Exitosamente"
         if os.path.isdir(origen):
@@ -334,7 +352,7 @@ class FLocal:
                 output_bt = "La ruta destino no existe"
         else:
             output_bt = "No se encontró nada en el directorio: "+origen+"para mover a: "+destino
-        self.generar_registro(input_bt,output_bt)
+        self.generar_registro(input_bt,output_bt,area_output)
 
     def limpiarRuta(self,ruta):
         partes = ruta.split("/")
@@ -369,14 +387,14 @@ class FLocal:
             f.write(contenido)
             f.close()
             
-    def generar_registro(self,entrada,salida):
+    def generar_registro(self,entrada,salida,area_output):
         tiempo = datetime.now()
         tiempo_string = tiempo.strftime("%d/%m/%Y %H:%M:%S")
         cnt_bitacora = tiempo_string + " - Input - "+entrada+"\n"
         cnt_bitacora += tiempo_string + " - Output - "+salida+"\n"
+        area_output.insert(tk.END,cnt_bitacora+"\n")
         self.llenar_log(cnt_bitacora)
 
-    
 fun = FLocal()
 #fun.comandoCopiar("./carpeta1/","./carpeta2/")
 #fun.comandoTransferir("./carpeta1/","","")

@@ -3,13 +3,14 @@ import FuncionesLocal as LocalOptions
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-
+import Encriptador as enc
 import analizadorEntrada
 
 #logL = Lg.LoginLg()
 #logL.abrirarchivo()
 
 localOp = LocalOptions.FLocal()
+encriptador = enc.AESencriptador()
 
 coordenada_x = 0
 coordenada_y = 0
@@ -74,17 +75,11 @@ def comando_EXEC(path):
 
     entrada = open(path,"r", encoding="utf-8")
     comandos = entrada.read()
-
-    #entrada = "exec -path->/home/Desktop/calificacion.mia modify -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\" add -path->/carpeta1/prueba1.txt -body->\" este es el nuevo contenido del archivo\""
     resultado = analizadorEntrada.parser.parse(comandos, lexer=analizadorEntrada.lexer)
-    print(resultado)
-
     for comando in resultado:
         print(comando)
-
     entrada.close()
     
-
 def generar_pantall_comando_exec():
 
     pantalla_comando_exec = tk.Toplevel(pantalla1)
@@ -106,9 +101,8 @@ def generar_pantall_comando_exec():
     campo_path.place(x=155, y=55)
 
     def obtener_parametros_exec():
-        
         path =  campo_path.get()
-        comando_EXEC(path)
+        localOp.ejecutarArchivo(path,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_exec, command=obtener_parametros_exec, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -142,7 +136,7 @@ def generar_pantall_comando_add():
     def obtener_parametros_add():
         path =  campo_path.get()
         body = campo_body.get()
-        localOp.comandoAgregar(path,body)
+        localOp.comandoAgregar(path,body,area_de_respuestas)
     
     boton_add = tk.Button(pantalla_comando_add, command=obtener_parametros_add, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -176,7 +170,7 @@ def generar_pantall_comando_modify():
     def obtener_parametros_modify():
         path =  campo_path.get()
         body = campo_body.get()
-        localOp.comandoModificar(path,body)
+        localOp.comandoModificar(path,body,area_de_respuestas)
     
     boton_add = tk.Button(pantalla_comando_modify, command=obtener_parametros_modify, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -210,7 +204,7 @@ def generar_pantall_comando_rename():
     def obtener_parametros_rename():
         path =  campo_path.get()
         name = campo_name.get()
-        localOp.comandoRenombrar(path,name)
+        localOp.comandoRenombrar(path,name,area_de_respuestas)
     
     boton_add = tk.Button(pantalla_comando_rename, command=obtener_parametros_rename, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -253,11 +247,10 @@ def generar_pantall_comando_transfer():
         from_ =  campo_from.get()
         to_ = campo_to.get()
         mode = campo_mode.get()
-        localOp.transferir_archivos_directorio("./Archivo"+from_,to_)
+        localOp.transferir_archivos_directorio("./Archivo"+from_,"./Archivo"+to_,mode,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_transfer, command=obtener_parametros_transfer, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
-
 
 def generar_pantall_comando_backup():
 
@@ -269,7 +262,6 @@ def generar_pantall_comando_backup():
     coordenada_x_comando = (ancho_monitor_comando - 500) // 2
     coordenada_y_comando = (alto_monitor_comando - 320) // 2  
     pantalla_comando_backup.geometry(f"{500}x{320}+{coordenada_x_comando}+{coordenada_y_comando}")   
-
 
 def generar_pantalla_comando_configure():
 
@@ -353,7 +345,7 @@ def generar_pantalla_comando_copy():
         path = campo_path.get()
         name = campo_destino.get()
         print(path + " " + name)
-        localOp.copiar_archivos_directorio("./Archivo"+path,name)
+        localOp.copiar_archivos_directorio("./Archivo"+path,"./Archivo"+name,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_copy, command=obtener_parametros_copy, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -387,7 +379,7 @@ def generar_pantalla_comando_delete():
     def obtener_parametros_delete():
         path = campo_path.get()
         name = campo_name.get()
-        localOp.comandoEliminar(name,path)
+        localOp.comandoEliminar(name,path,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_delete, command=obtener_parametros_delete, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -425,11 +417,10 @@ def generar_pantalla_comando_create():
     campo_path.place(x=155, y=155)
 
     def obtener_parametros_create():
-
         name =  campo_name.get()
         body = campo_body.get()
         path = campo_path.get()
-        localOp.comandoCrear(name,body,path)
+        localOp.comandoCrear(name,body,path,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_create, command=obtener_parametros_create, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -444,10 +435,6 @@ def generar_pantalla_principal():
     etiqueta_area_de_respuestas = tk.Label(pantalla, text="Respuesta e historial de comandos ingresados:")
     etiqueta_area_de_respuestas.place(x=50, y=30)
 
-    area_de_respuestas = tk.Text(pantalla, height=29, width=68)
-    area_de_respuestas.config(state="disabled")
-    area_de_respuestas.place(x=45, y=50)
-
     etiqueta_entrada = tk.Label(pantalla, text="Ingrese un comando:")
     etiqueta_entrada.place(x=50, y=530)
 
@@ -458,7 +445,7 @@ def generar_pantalla_principal():
     def ejetular_linea_entrada():
         analizadorEntrada.comandos = []
         resultado = analizadorEntrada.parser.parse(entrada.get(), lexer=analizadorEntrada.lexer)
-        localOp.ejecutarComando(resultado)
+        localOp.ejecutarComando(resultado,area_de_respuestas)
 
     boton_ejectuar_linea= tk.Button(pantalla, command=ejetular_linea_entrada, text="Ejecutar", width=10)
     boton_ejectuar_linea.place(x = 513, y =543)
@@ -505,13 +492,13 @@ coordenada_x = (ancho_monitor - 872) // 2
 coordenada_y = (alto_monitor - 600) // 2
 pantalla1.geometry(f"{872}x{600}+{coordenada_x}+{coordenada_y}")
 
+area_de_respuestas = tk.Text(pantalla1, height=29, width=68)
+area_de_respuestas.config(state="disabled")
+area_de_respuestas.place(x=45, y=50)
+area_de_respuestas['state'] = 'normal'
 
 def main():  
-
     #generar_pantalla_login()
     pantalla1.mainloop()
-
-    
-
 
 main()
