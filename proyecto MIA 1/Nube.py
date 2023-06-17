@@ -111,6 +111,64 @@ class NubeCm:
                 rtalimpia = rtalimpia+x
         return rtalimpia
     
+    def encontrar_direcotrio_archivo(self, credenciales, raiz, carpeta_o_archivo_nombre):
+
+        posible_archivo = carpeta_o_archivo_nombre.split('.') 
+
+        if len(posible_archivo) > 1:
+            print('encontro un archivo')
+
+            print(posible_archivo[0])
+            print(posible_archivo[1])
+            print(carpeta_o_archivo_nombre)
+
+            obtener_archivos = f"'{raiz}' in parents and trashed=false and title='{carpeta_o_archivo_nombre}'"
+            archivos = credenciales.ListFile({'q': obtener_archivos}).GetList()
+
+            if len(archivos) > 0:
+                return True, archivos[0]['id']
+            else:
+                return False, None
+
+        else: 
+            print('una carpeta')
+            return self.encontrar_directorio(credenciales, raiz, carpeta_o_archivo_nombre)
+
+    def recorrer_ruta_agregar_archivo_retornar_id(self,raiz, credenciales, ruta):
+
+        print(ruta)
+
+        ruta = self.limpiarRuta(ruta)
+
+        if ruta[0] == '/':
+            ruta = ruta[ 1:len(ruta)]
+
+        if ruta[len(ruta)-1] == '/':
+            ruta = ruta[ 0:len(ruta) -1]
+
+        carpetas_anidadas = ruta.split('/')    
+
+        print(carpetas_anidadas)
+
+        auxRaiz = raiz
+
+        for subCarpeta in carpetas_anidadas:
+            print(subCarpeta)
+
+            print(auxRaiz)
+
+            exists, subcarpetaRaiz = self.encontrar_direcotrio_archivo(credenciales, auxRaiz, subCarpeta)
+
+            if exists:
+
+                auxRaiz = subcarpetaRaiz
+            else:
+
+                return None
+
+        return auxRaiz
+    
+    
 #crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
 #crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
 nb = NubeCm()
