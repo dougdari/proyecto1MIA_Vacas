@@ -1,6 +1,6 @@
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
-
+import regex as re
 direc_credenciales = 'credentials_module.json'
 id_folder = '1ba5thhoBgCP04YAXIeIWeRZg9YMmFT_P'
 
@@ -98,7 +98,20 @@ class NubeCm:
         arch.Upload()
         pass
 
+    def limpiarRuta(self,ruta):
+        partes = ruta.split("/")
+        nueva_partes = [x for x in partes if x != '']
+        rtalimpia = "/"
+        for x in nueva_partes:
+            if "\"" in x:
+                x = x.replace('\"','')
+            if not re.search(".*\.txt",x):
+                rtalimpia = rtalimpia+x+"/"
+            else:
+                rtalimpia = rtalimpia+x
+        return rtalimpia
+    
 #crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
 #crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
 nb = NubeCm()
-nb.crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
+#nb.crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
