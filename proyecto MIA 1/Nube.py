@@ -100,4 +100,4 @@ if __name__ == '__main__':
     id_folder = '1woQAJWf0cI0Cv23WmjsCfmQiA0ulyHAD'
     crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
     
-    crear_archivo('/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
+    crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
