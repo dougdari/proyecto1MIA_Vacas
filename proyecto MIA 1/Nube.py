@@ -144,6 +144,40 @@ class NubeCm:
         if(id != None):
             archivo_eliminar = credenciales.CreateFile({'id':id})
             archivo_eliminar.Delete()
+
+    def cambiar_nombre_archivo(self, ruta, nombre):
+
+        credenciales = self.iniciosesion()
+
+        id = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder, credenciales, ruta)
+        if(id != None):
+            archivo = credenciales.CreateFile({'id': id})
+            archivo['title'] = nombre
+            archivo.Upload()
+  
+    def cambiar_contenido_archivo(self, ruta, nuevo_contenido):
+
+        credenciales = self.iniciosesion()
+
+        id = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder, credenciales, ruta)
+        if(id != None):
+            archivo = credenciales.CreateFile({'id': id})
+            archivo.SetContentString(nuevo_contenido)
+            archivo.Upload()
+
+    def agregar_contenido_al_final(self, ruta, nuevo_contenido):
+
+        credenciales = self.iniciosesion()
+
+        id = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder, credenciales, ruta)
+        if(id != None):
+            archivo = credenciales.CreateFile({'id': id})
+            contenido_actual = archivo.GetContentString()
+            contenido_archivo = contenido_actual + str(nuevo_contenido)
+            archivo.SetContentString(contenido_archivo)
+            archivo.Upload()
+
+    
     
 #crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
 #crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
