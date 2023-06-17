@@ -137,8 +137,16 @@ class NubeCm:
 
         return auxRaiz
     
+    def eliminar(self,ruta):
+        credenciales = self.iniciosesion()
+        ruta_limpia = self.limpiarRuta(ruta)
+        id = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder,credenciales,ruta_limpia)
+        if(id != None):
+            archivo_eliminar = credenciales.CreateFile({'id':id})
+            archivo_eliminar.Delete()
     
 #crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
 #crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
 nb = NubeCm()
+nb.eliminar('/\"Mi Carpeta\"/')
 #nb.crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
