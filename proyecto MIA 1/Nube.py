@@ -46,8 +46,6 @@ class NubeCm:
 
     def recorrer_ruta_agregar_archivo(self,raiz, credenciales, ruta):
 
-        print(ruta)
-
         if ruta[0] == '/':
             ruta = ruta[ 1:len(ruta)]
 
@@ -55,26 +53,16 @@ class NubeCm:
             ruta = ruta[ 0:len(ruta) -1]
 
         carpetas_anidadas = ruta.split('/')    
-
-        print(carpetas_anidadas)
-
         auxRaiz = raiz
 
         for subCarpeta in carpetas_anidadas:
-            print(subCarpeta)
 
-            print(auxRaiz)
+            SeEncontro, subcarpetaRaiz = self.encontrar_directorio(credenciales, auxRaiz, subCarpeta)
 
-            exists, subcarpetaRaiz = self.encontrar_directorio(credenciales, auxRaiz, subCarpeta)
-
-            print(subcarpetaRaiz)
-
-            if exists:
+            if SeEncontro:
 
                 auxRaiz = subcarpetaRaiz
             else:
-
-                print('llega')
 
                 self.agregar_carpeta(credenciales, auxRaiz, subCarpeta)
                 nada, subcarpetaRaiz = self.encontrar_directorio(credenciales, auxRaiz, subCarpeta)
@@ -85,12 +73,7 @@ class NubeCm:
     def crear_archivo(self,id_folder,ruta,nombre,contenido):
 
         credenciales = self.iniciosesion()
-
-        #print(ruta)
-
         destinoId = self.recorrer_ruta_agregar_archivo(id_folder,credenciales,ruta)
-
-        print(destinoId)
         arch = credenciales.CreateFile({'title': nombre,
                                         'parents': [{"kind":"drive#fileLink",
                                                     "id":destinoId}]})
@@ -116,11 +99,6 @@ class NubeCm:
         posible_archivo = carpeta_o_archivo_nombre.split('.') 
 
         if len(posible_archivo) > 1:
-            print('encontro un archivo')
-
-            print(posible_archivo[0])
-            print(posible_archivo[1])
-            print(carpeta_o_archivo_nombre)
 
             obtener_archivos = f"'{raiz}' in parents and trashed=false and title='{carpeta_o_archivo_nombre}'"
             archivos = credenciales.ListFile({'q': obtener_archivos}).GetList()
@@ -131,12 +109,9 @@ class NubeCm:
                 return False, None
 
         else: 
-            print('una carpeta')
             return self.encontrar_directorio(credenciales, raiz, carpeta_o_archivo_nombre)
 
     def recorrer_ruta_agregar_archivo_retornar_id(self,raiz, credenciales, ruta):
-
-        print(ruta)
 
         ruta = self.limpiarRuta(ruta)
 
@@ -147,19 +122,13 @@ class NubeCm:
             ruta = ruta[ 0:len(ruta) -1]
 
         carpetas_anidadas = ruta.split('/')    
-
-        print(carpetas_anidadas)
-
         auxRaiz = raiz
 
         for subCarpeta in carpetas_anidadas:
-            print(subCarpeta)
 
-            print(auxRaiz)
+            seEncontro, subcarpetaRaiz = self.encontrar_direcotrio_archivo(credenciales, auxRaiz, subCarpeta)
 
-            exists, subcarpetaRaiz = self.encontrar_direcotrio_archivo(credenciales, auxRaiz, subCarpeta)
-
-            if exists:
+            if seEncontro:
 
                 auxRaiz = subcarpetaRaiz
             else:
