@@ -154,6 +154,8 @@ class NubeCm:
             archivo = credenciales.CreateFile({'id': id})
             archivo['title'] = nombre
             archivo.Upload()
+        else:
+            print("No existe la ruta")
   
     def cambiar_contenido_archivo(self, ruta, nuevo_contenido):
 
@@ -164,6 +166,8 @@ class NubeCm:
             archivo = credenciales.CreateFile({'id': id})
             archivo.SetContentString(nuevo_contenido)
             archivo.Upload()
+        else:
+            print("No existe la ruta")
 
     def agregar_contenido_al_final(self, ruta, nuevo_contenido):
 
@@ -176,6 +180,8 @@ class NubeCm:
             contenido_archivo = contenido_actual + str(nuevo_contenido)
             archivo.SetContentString(contenido_archivo)
             archivo.Upload()
+        else:
+            print("No existe la ruta")
 
     
     
