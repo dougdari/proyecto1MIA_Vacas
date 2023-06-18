@@ -305,69 +305,135 @@ class NubeCm:
                 ruta_destino = x['id']
         return ruta_destino
     
-def backup_local_a_drive(self, ruta, destino, destino_anidado=None):
+    def backup_local_a_drive(self, ruta, destino, destino_anidado=None):
 
-    credenciales = self.iniciosesion()
+        credenciales = self.iniciosesion()
 
-    if ruta[0] == '/':
-        ruta = ruta[ 1:len(ruta)]
+        if ruta[0] == '/':
+            ruta = ruta[ 1:len(ruta)]
 
-    if ruta[len(ruta)-1] == '/':
-        ruta = ruta[ 0:len(ruta) -1]
- 
-    posible_nombre = os.path.basename(ruta)    
-    existeCarpeta, posibleCarpetaId = self.encontrar_directorio(credenciales, destino, posible_nombre)
+        if ruta[len(ruta)-1] == '/':
+            ruta = ruta[ 0:len(ruta) -1]
+    
+        posible_nombre = os.path.basename(ruta)    
+        existeCarpeta, posibleCarpetaId = self.encontrar_directorio(credenciales, destino, posible_nombre)
 
-    print(existeCarpeta)
-    print(posibleCarpetaId)
+        print(existeCarpeta)
+        print(posibleCarpetaId)
 
-    agregar_directorio = {'title': str(posible_nombre), 'mimeType':  'application/vnd.google-apps.folder', 'parents': [{'id': destino}]}
-    agregar_folder_ = credenciales.CreateFile(agregar_directorio)
+        agregar_directorio = {'title': str(posible_nombre), 'mimeType':  'application/vnd.google-apps.folder', 'parents': [{'id': destino}]}
+        agregar_folder_ = credenciales.CreateFile(agregar_directorio)
 
-    print('pasa')
+        print('pasa')
 
-    if destino_anidado:
-        print('Entra')
-        agregar_folder_['parents'] = [{'id': destino_anidado}]
+        if destino_anidado:
+            print('Entra')
+            agregar_folder_['parents'] = [{'id': destino_anidado}]
 
-    if not existeCarpeta:
-        print('Entra2')
-        print('no existe')
-        agregar_folder_.Upload()
-    else:
-        print('Entra3')
-        verificar_archivo = False
-        for archivo_carpeta in credenciales.ListFile({'q': f"'{destino}' in parents and trashed=false"}).GetList():
-            if archivo_carpeta['title'] == posible_nombre and archivo_carpeta['id'] == posibleCarpetaId:
-                verificar_archivo = True
-                archivo_carpeta.Delete()  
-                print('eliminado')
-                break
-        
-        if verificar_archivo:
+        if not existeCarpeta:
+            print('Entra2')
+            print('no existe')
             agregar_folder_.Upload()
-            print('re subido')
-
-    for contenido in os.listdir(ruta):
-        anidado = os.path.join(ruta, contenido)
-        if os.path.isdir(anidado):         
-
-            self.backup_local_a_drive(anidado, destino, destino_anidado=agregar_folder_['id'])
-        else:  
-            
-            existe_archivo_dentro = False
-
-            for archivo_o_carpeta in credenciales.ListFile({'q': f"'{agregar_folder_['id']}' in parents and trashed=false"}).GetList():
-
-                if archivo_o_carpeta['title'] == contenido:
-                    existe_archivo_dentro = True
+        else:
+            print('Entra3')
+            verificar_archivo = False
+            for archivo_carpeta in credenciales.ListFile({'q': f"'{destino}' in parents and trashed=false"}).GetList():
+                if archivo_carpeta['title'] == posible_nombre and archivo_carpeta['id'] == posibleCarpetaId:
+                    verificar_archivo = True
+                    archivo_carpeta.Delete()  
+                    print('eliminado')
                     break
             
-            if not existe_archivo_dentro:
+            if verificar_archivo:
+                agregar_folder_.Upload()
+                print('re subido')
 
-                agregar_archivo = credenciales.CreateFile({ 'title': contenido,'parents': [{'id': agregar_folder_['id']}]})
-                agregar_archivo.SetContentFile(anidado)
-                agregar_archivo.Upload()
+        for contenido in os.listdir(ruta):
+            anidado = os.path.join(ruta, contenido)
+            if os.path.isdir(anidado):         
+
+                self.backup_local_a_drive(anidado, destino, destino_anidado=agregar_folder_['id'])
+            else:  
+                
+                existe_archivo_dentro = False
+
+                for archivo_o_carpeta in credenciales.ListFile({'q': f"'{agregar_folder_['id']}' in parents and trashed=false"}).GetList():
+
+                    if archivo_o_carpeta['title'] == contenido:
+                        existe_archivo_dentro = True
+                        break
+                
+                if not existe_archivo_dentro:
+
+                    agregar_archivo = credenciales.CreateFile({ 'title': contenido,'parents': [{'id': agregar_folder_['id']}]})
+                    agregar_archivo.SetContentFile(anidado)
+                    agregar_archivo.Upload()
+
+    def backup_local_drive(self, ruta, destino, destino_anidado=None):
+
+        credenciales = self.iniciosesion()
+
+        if ruta[0] == '/':
+            ruta = ruta[ 1:len(ruta)]
+
+        if ruta[len(ruta)-1] == '/':
+            ruta = ruta[ 0:len(ruta) -1]
+    
+        posible_nombre = os.path.basename(ruta)    
+        existeCarpeta, posibleCarpetaId = self.encontrar_directorio(credenciales, destino, posible_nombre)
+
+        print(existeCarpeta)
+        print(posibleCarpetaId)
+
+        agregar_directorio = {'title': str(posible_nombre), 'mimeType':  'application/vnd.google-apps.folder', 'parents': [{'id': destino}]}
+        agregar_folder_ = credenciales.CreateFile(agregar_directorio)
+
+        print('pasa')
+
+        if destino_anidado:
+            print('Entra')
+            agregar_folder_['parents'] = [{'id': destino_anidado}]
+
+        if not existeCarpeta:
+            print('Entra2')
+            print('no existe')
+            agregar_folder_.Upload()
+        else:
+            print('Entra3')
+            verificar_archivo = False
+            for archivo_carpeta in credenciales.ListFile({'q': f"'{destino}' in parents and trashed=false"}).GetList():
+                if archivo_carpeta['title'] == posible_nombre and archivo_carpeta['id'] == posibleCarpetaId:
+                    verificar_archivo = True
+                    archivo_carpeta.Delete()  
+                    print('eliminado')
+                    break
+            
+            if verificar_archivo:
+                agregar_folder_.Upload()
+                print('re subido')
+
+        for contenido in os.listdir(ruta):
+            anidado = os.path.join(ruta, contenido)
+            if os.path.isdir(anidado):         
+
+                self.backup_directory(anidado, destino, destino_anidado=agregar_folder_['id'])
+            else:  
+                
+                existe_archivo_dentro = False
+
+                for archivo_o_carpeta in credenciales.ListFile({'q': f"'{agregar_folder_['id']}' in parents and trashed=false"}).GetList():
+
+                    if archivo_o_carpeta['title'] == contenido:
+                        existe_archivo_dentro = True
+                        break
+                
+                if not existe_archivo_dentro:
+
+                    agregar_archivo = credenciales.CreateFile({ 'title': contenido,'parents': [{'id': agregar_folder_['id']}]})
+                    agregar_archivo.SetContentFile(anidado)
+                    agregar_archivo.Upload()
+                    print(f"Archivo '{contenido}' respaldado.")
+
         
 
     def llenar_log(self,contenido):
