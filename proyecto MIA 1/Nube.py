@@ -10,6 +10,7 @@ import os.path
 import os
 from datetime import date
 from datetime import datetime
+import shutil
 
 direc_credenciales = 'credentials_module.json'
 id_folder = '1ba5thhoBgCP04YAXIeIWeRZg9YMmFT_P'
@@ -51,15 +52,16 @@ class NubeCm:
             self.transferir(ruta_origen,ruta_destino,arreglo[0][3],area_output)
          #------------------------------------
         elif(arreglo[0][0].lower() == "rename"):
-            self.cambiar_nombre_archivo(arreglo[0][1],arreglo[0][2],area_output)
+            self.cambiar_nombre_archivo(arreglo[0][1],arreglo[0][2])
          #------------------------------------
         elif(arreglo[0][0].lower() == "modify"):
-            self.cambiar_contenido_archivo(arreglo[0][1],arreglo[0][2],area_output)
+            self.cambiar_contenido_archivo(arreglo[0][1],arreglo[0][2])
          #------------------------------------
         elif(arreglo[0][0].lower() == "add"):
-            self.agregar_contenido_al_final(arreglo[0][1],arreglo[0][2],area_output)
+            self.agregar_contenido_al_final(arreglo[0][1],arreglo[0][2])
          #------------------------------------
         elif(arreglo[0][0].lower() == "backup"):
+            self.backup_drive_a_local(id_folder,'./Archivos/')
             print("Respaldo")
          #------------------------------------
         elif(arreglo[0][0].lower() == "exec"):
@@ -369,71 +371,40 @@ class NubeCm:
                     agregar_archivo.SetContentFile(anidado)
                     agregar_archivo.Upload()
 
-    def backup_local_drive(self, ruta, destino, destino_anidado=None):
+    def backup_drive_a_local(self, id_folder, ruta):
 
         credenciales = self.iniciosesion()
 
-        if ruta[0] == '/':
-            ruta = ruta[ 1:len(ruta)]
+        for archivo_local in os.listdir(ruta):
+            ruta_local = os.path.join(ruta, archivo_local)
+            try:
+                if os.path.isfile(ruta_local):
+                    os.unlink(ruta_local) 
+                elif os.path.isdir(ruta_local):
+                    shutil.rmtree(ruta_local)  
+            except Exception as e:
+                print('algun error')
 
-        if ruta[len(ruta)-1] == '/':
-            ruta = ruta[ 0:len(ruta) -1]
-    
-        posible_nombre = os.path.basename(ruta)    
-        existeCarpeta, posibleCarpetaId = self.encontrar_directorio(credenciales, destino, posible_nombre)
+        archivos_y_carptetas = credenciales.ListFile({'q': f"'{id_folder}' in parents and trashed=false"}).GetList()
 
-        print(existeCarpeta)
-        print(posibleCarpetaId)
+        for contenido in archivos_y_carptetas:
 
-        agregar_directorio = {'title': str(posible_nombre), 'mimeType':  'application/vnd.google-apps.folder', 'parents': [{'id': destino}]}
-        agregar_folder_ = credenciales.CreateFile(agregar_directorio)
+            if contenido['mimeType'] == 'application/vnd.google-apps.folder':  
 
-        print('pasa')
+                nueva_ruta_anidada = os.path.join(ruta, contenido['title'])
+                if not os.path.exists(nueva_ruta_anidada):
 
-        if destino_anidado:
-            print('Entra')
-            agregar_folder_['parents'] = [{'id': destino_anidado}]
+                    os.makedirs(nueva_ruta_anidada)
 
-        if not existeCarpeta:
-            print('Entra2')
-            print('no existe')
-            agregar_folder_.Upload()
-        else:
-            print('Entra3')
-            verificar_archivo = False
-            for archivo_carpeta in credenciales.ListFile({'q': f"'{destino}' in parents and trashed=false"}).GetList():
-                if archivo_carpeta['title'] == posible_nombre and archivo_carpeta['id'] == posibleCarpetaId:
-                    verificar_archivo = True
-                    archivo_carpeta.Delete()  
-                    print('eliminado')
-                    break
-            
-            if verificar_archivo:
-                agregar_folder_.Upload()
-                print('re subido')
-
-        for contenido in os.listdir(ruta):
-            anidado = os.path.join(ruta, contenido)
-            if os.path.isdir(anidado):         
-
-                self.backup_directory(anidado, destino, destino_anidado=agregar_folder_['id'])
+                self.backup_drive_a_local(contenido['id'], nueva_ruta_anidada)
+                
             else:  
-                
-                existe_archivo_dentro = False
 
-                for archivo_o_carpeta in credenciales.ListFile({'q': f"'{agregar_folder_['id']}' in parents and trashed=false"}).GetList():
+                ruta_nuevo_archivo = os.path.join(ruta, contenido['title'])
 
-                    if archivo_o_carpeta['title'] == contenido:
-                        existe_archivo_dentro = True
-                        break
-                
-                if not existe_archivo_dentro:
+                if not os.path.exists(ruta_nuevo_archivo):
 
-                    agregar_archivo = credenciales.CreateFile({ 'title': contenido,'parents': [{'id': agregar_folder_['id']}]})
-                    agregar_archivo.SetContentFile(anidado)
-                    agregar_archivo.Upload()
-                    print(f"Archivo '{contenido}' respaldado.")
-
+                    contenido.GetContentFile(ruta_nuevo_archivo)
         
 
     def llenar_log(self,contenido):

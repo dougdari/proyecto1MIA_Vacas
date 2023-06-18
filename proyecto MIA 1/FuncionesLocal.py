@@ -10,6 +10,7 @@ import Encriptador as enc
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
+import Nube
 
 class FLocal:
     contenido_output = ""
@@ -42,7 +43,12 @@ class FLocal:
         elif(arreglo[0][0].lower() == "add"):
             self.comandoAgregar(arreglo[0][1],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "backup"):
+
+            objetoNube = Nube.NubeCm()
+            objetoNube.backup_local_a_drive('./Archivos/','1ba5thhoBgCP04YAXIeIWeRZg9YMmFT_P')
             print("Respaldo")
+
+            
         elif(arreglo[0][0].lower() == "exec"):
             self.ejecutarArchivo(arreglo[0][1],area_output)
 
