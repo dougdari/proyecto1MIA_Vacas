@@ -191,7 +191,7 @@ class NubeCm:
             archivo_eliminar = credenciales.CreateFile({'id':id})
             archivo_eliminar.Delete()
 
-    def cambiar_nombre_archivo(self, ruta, nombre):
+    def cambiar_nombre_archivo(self, ruta, nombre,area_output):
 
         credenciales = self.iniciosesion()
 
@@ -203,7 +203,7 @@ class NubeCm:
         else:
             print("No existe la ruta")
   
-    def cambiar_contenido_archivo(self, ruta, nuevo_contenido):
+    def cambiar_contenido_archivo(self, ruta, nuevo_contenido,area_output):
 
         credenciales = self.iniciosesion()
 
@@ -215,7 +215,7 @@ class NubeCm:
         else:
             print("No existe la ruta")
 
-    def agregar_contenido_al_final(self, ruta, nuevo_contenido):
+    def agregar_contenido_al_final(self, ruta, nuevo_contenido,area_output):
 
         credenciales = self.iniciosesion()
 

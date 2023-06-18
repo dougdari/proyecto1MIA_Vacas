@@ -17,7 +17,7 @@ class LoginLg:
         size = len(listaUsuarios)
         i = 0
         while(i+1<size):
-            if(usuario == listaUsuarios[i].replace("\n","") and contrasenia == enc.desencriptar(listaUsuarios[i+1].replace("\n","")).decode("utf-8","ignore")):
+            if(usuario == listaUsuarios[i].replace("\n","") and contrasenia == enc.desencriptar(listaUsuarios[i+1].replace("\n",""),"miaproyecto12345").decode("utf-8","ignore")):
                 #print("INGRESADO")
                 flagC = True
                 break
