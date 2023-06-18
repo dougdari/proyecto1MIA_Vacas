@@ -1,8 +1,11 @@
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 import regex as re
+import os
+
 direc_credenciales = 'credentials_module.json'
 id_folder = '1ba5thhoBgCP04YAXIeIWeRZg9YMmFT_P'
+
 
 class NubeCm:
     def iniciosesion(self,):
@@ -32,7 +35,7 @@ class NubeCm:
 
     def encontrar_directorio(self,credenciales, raiz, carpeta_nombre):
 
-        obtener_archivos = f"'{raiz}' in parents and title = '{carpeta_nombre}' and mimeType = 'application/vnd.google-apps.folder'"
+        obtener_archivos = f"'{raiz}' in parents and title = '{carpeta_nombre}' and mimeType = 'application/vnd.google-apps.folder' and trashed=false"
         archivos_carpetas = credenciales.ListFile({'q': obtener_archivos}).GetList()
         if len(archivos_carpetas) > 0:
             return True, archivos_carpetas[0]['id']
@@ -242,6 +245,70 @@ class NubeCm:
             if(x['title'] == file_padre['title']):
                 ruta_destino = x['id']
         return ruta_destino
+    
+def backup_local_a_drive(self, ruta, destino, destino_anidado=None):
+
+    credenciales = self.iniciosesion()
+
+    if ruta[0] == '/':
+        ruta = ruta[ 1:len(ruta)]
+
+    if ruta[len(ruta)-1] == '/':
+        ruta = ruta[ 0:len(ruta) -1]
+ 
+    posible_nombre = os.path.basename(ruta)    
+    existeCarpeta, posibleCarpetaId = self.encontrar_directorio(credenciales, destino, posible_nombre)
+
+    print(existeCarpeta)
+    print(posibleCarpetaId)
+
+    agregar_directorio = {'title': str(posible_nombre), 'mimeType':  'application/vnd.google-apps.folder', 'parents': [{'id': destino}]}
+    agregar_folder_ = credenciales.CreateFile(agregar_directorio)
+
+    print('pasa')
+
+    if destino_anidado:
+        print('Entra')
+        agregar_folder_['parents'] = [{'id': destino_anidado}]
+
+    if not existeCarpeta:
+        print('Entra2')
+        print('no existe')
+        agregar_folder_.Upload()
+    else:
+        print('Entra3')
+        verificar_archivo = False
+        for archivo_carpeta in credenciales.ListFile({'q': f"'{destino}' in parents and trashed=false"}).GetList():
+            if archivo_carpeta['title'] == posible_nombre and archivo_carpeta['id'] == posibleCarpetaId:
+                verificar_archivo = True
+                archivo_carpeta.Delete()  
+                print('eliminado')
+                break
+        
+        if verificar_archivo:
+            agregar_folder_.Upload()
+            print('re subido')
+
+    for contenido in os.listdir(ruta):
+        anidado = os.path.join(ruta, contenido)
+        if os.path.isdir(anidado):         
+
+            self.backup_local_a_drive(anidado, destino, destino_anidado=agregar_folder_['id'])
+        else:  
+            
+            existe_archivo_dentro = False
+
+            for archivo_o_carpeta in credenciales.ListFile({'q': f"'{agregar_folder_['id']}' in parents and trashed=false"}).GetList():
+
+                if archivo_o_carpeta['title'] == contenido:
+                    existe_archivo_dentro = True
+                    break
+            
+            if not existe_archivo_dentro:
+
+                agregar_archivo = credenciales.CreateFile({ 'title': contenido,'parents': [{'id': agregar_folder_['id']}]})
+                agregar_archivo.SetContentFile(anidado)
+                agregar_archivo.Upload()
         
 
 #crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
