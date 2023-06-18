@@ -182,11 +182,70 @@ class NubeCm:
             archivo.Upload()
         else:
             print("No existe la ruta")
+    
+    def copiar(self,ruta_origen,ruta_destino):
+        credenciales = self.iniciosesion()
+        ruta_origen_limpia = self.limpiarRuta(ruta_origen)
+        ruta_destino_limpia = self.limpiarRuta(ruta_destino)
 
-    
-    
+        id_origen = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder,credenciales,ruta_origen_limpia)
+        id_destino = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder,credenciales,ruta_destino_limpia)
+        #Se determina si el archivo a Copiar es una Carpeta o un Archivo
+        n = credenciales.CreateFile({'id':id_origen})
+        if id_origen != None and id_destino != None:
+            if(re.search(".*\.txt",n['title'])):
+                credenciales.auth.service.files().copy(fileId=id_origen,body={"parents": [{"kind": "drive#fileLink","id": id_destino}], 'title': n['title']}).execute()
+            else:
+                #Creo la primera carpeta
+                self.agregar_carpeta(credenciales,id_destino,n['title'])
+                #Se crea el contenido de cada carpeta de manera iterativa
+                file_list = credenciales.ListFile({'q': "'"+id_destino+"'"+" in parents and trashed=false"}).GetList()
+                ruta_destino=self.get_IDFolder(file_list,n)
+                self.crear_ruta_ct(id_origen,ruta_destino)
+                  
+    def transferir(self,ruta_origen,ruta_destino):
+        credenciales = self.iniciosesion()
+        ruta_origen_limpia = self.limpiarRuta(ruta_origen)
+        ruta_destino_limpia = self.limpiarRuta(ruta_destino)
+
+        id_origen = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder,credenciales,ruta_origen_limpia)
+        id_destino = self.recorrer_ruta_agregar_archivo_retornar_id(id_folder,credenciales,ruta_destino_limpia)
+        #Se determina si el archivo a Copiar es una Carpeta o un Archivo
+        n = credenciales.CreateFile({'id':id_origen})
+        if id_origen != None and id_destino != None:
+            if(re.search(".*\.txt",n['title'])):
+                credenciales.auth.service.files().copy(fileId=id_origen,body={"parents": [{"kind": "drive#fileLink","id": id_destino}], 'title': n['title']}).execute()
+            else:
+                #Creo la primera carpeta
+                self.agregar_carpeta(credenciales,id_destino,n['title'])
+                file_list = credenciales.ListFile({'q': "'"+id_destino+"'"+" in parents and trashed=false"}).GetList()
+                ruta_destino=self.get_IDFolder(file_list,n)
+                #Se crea el contenido de cada carpeta de manera iterativa
+                self.crear_ruta_ct(id_origen,ruta_destino)
+        #Se eliminan los archivos originales para terminar el transfer
+        self.eliminar(ruta_origen_limpia)
+            
+    def crear_ruta_ct(self,id_carpeta_expandir,ruta_almacen):
+        credenciales = self.iniciosesion()
+        file_list = credenciales.ListFile({'q': "'"+id_carpeta_expandir+"'"+" in parents and trashed=false"}).GetList()
+        for arch in file_list:
+            if(re.search(".*\.txt",arch['title'])):
+               credenciales.auth.service.files().copy(fileId=arch['id'],body={"parents": [{"kind": "drive#fileLink","id": ruta_almacen}], 'title': arch['title']}).execute()
+            else:
+                self.agregar_carpeta(credenciales,ruta_almacen,arch['title'])
+                lista2 = credenciales.ListFile({'q': "'"+ruta_almacen+"'"+" in parents and trashed=false"}).GetList()
+                ruta_destino=self.get_IDFolder(lista2,arch)
+                self.crear_ruta_ct(arch['id'],ruta_destino)
+
+    def get_IDFolder(self,file_list,file_padre):
+        for x in file_list:
+            if(x['title'] == file_padre['title']):
+                ruta_destino = x['id']
+        return ruta_destino
+        
+
 #crear_archivo_texto('Ejemplo1.txt','Contenido de archivo',id_folder)
 #crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
 nb = NubeCm()
-nb.eliminar('/\"Mi Carpeta\"/')
+nb.transferir('/Mi Carpeta/Hola/','/Carpeta 2/')
 #nb.crear_archivo(id_folder,'/Mi Carpeta/Hola/','archivoPrueba.txt','Este es el contenido del archivo \n otra linea')
