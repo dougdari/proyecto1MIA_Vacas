@@ -10,8 +10,8 @@ import os.path
 import os
 from datetime import date
 from datetime import datetime
-#logL = Lg.LoginLg()
-#logL.abrirarchivo()
+logL = Lg.LoginLg()
+logL.abrirarchivo()
 
 localOp = LocalOptions.FLocal()
 CloudOp = CloudOptions.NubeCm()
@@ -587,6 +587,6 @@ area_de_respuestas.place(x=45, y=50)
 area_de_respuestas['state'] = 'normal'
 
 def main():  
-    #generar_pantalla_login()
+    generar_pantalla_login()
     pantalla1.mainloop()
 main()
