@@ -376,10 +376,7 @@ class FLocal:
             nueva_ruta = self.limpiarRuta(ruta)
             #Se explora la ruta para crear las carpetas necesarias
             self.crear_ruta(nueva_ruta)
-            #Se crea el archivo y se detecta si no existe uno con nombre igual
-            if os.path.exists(nueva_ruta+nombre):
-                nombre = nombre+"(1)"
-            f = open(nueva_ruta+nombre,"x")
+            f = open(nueva_ruta+nombre,"a")
             f.write(contenido)
             f.close()
         else:

@@ -1,15 +1,20 @@
 import LoginLogic as Lg
 import FuncionesLocal as LocalOptions
+import Nube as CloudOptions
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import Encriptador as enc
 import analizadorEntrada
-
+import os.path
+import os
+from datetime import date
+from datetime import datetime
 #logL = Lg.LoginLg()
 #logL.abrirarchivo()
 
 localOp = LocalOptions.FLocal()
+CloudOp = CloudOptions.NubeCm()
 encriptador = enc.AESencriptador()
 
 coordenada_x = 0
@@ -17,6 +22,8 @@ coordenada_y = 0
 
 usuario_nombre_logueado = ""
 usuario_contrasenia_logueado = ""
+
+#PARAMETROS QUE ALMACENARÁN LOS VALORES DE LA OP CONFIG
 
 def generar_pantalla_login():
 
@@ -102,7 +109,8 @@ def generar_pantall_comando_exec():
 
     def obtener_parametros_exec():
         path =  campo_path.get()
-        localOp.ejecutarArchivo(path,area_de_respuestas)
+        primer_linea_exec(path)
+        #localOp.ejecutarArchivo(path,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_exec, command=obtener_parametros_exec, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -310,7 +318,22 @@ def generar_pantalla_comando_configure():
         log = campo_encrypt_log.get()
         read = campo_encrypt_read.get()
         llave = campo_llave.get()
-        print(type + " " + log + " " + read + " " + llave)
+        #SE ESTABLECEN LOS PARAMETROS
+        global tipo_config
+        tipo_config = type
+        global encrypt_log
+        encrypt_log = log
+        global encrypt_read
+        encrypt_read = read
+        entrada = ""
+        if(llave != ""):
+            global llave_enc
+            llave_enc = llave
+            entrada = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read+" -llave->"+llave_enc
+        else:
+            entrada = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read
+        crear_llenar_bitacora(entrada)
+        #print(type + " " + log + " " + read + " " + llave)
 
     boton_add = tk.Button(pantalla_comando_configure, command=obtener_parametros_configure, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -445,7 +468,28 @@ def generar_pantalla_principal():
     def ejetular_linea_entrada():
         analizadorEntrada.comandos = []
         resultado = analizadorEntrada.parser.parse(entrada.get(), lexer=analizadorEntrada.lexer)
-        localOp.ejecutarComando(resultado,area_de_respuestas)
+        if(resultado[0][0].lower() == "configure"):
+            entrada_txt = ""
+            global tipo_config
+            tipo_config = resultado[0][1]
+            global encrypt_log
+            encrypt_log = resultado[0][2]
+            global encrypt_read
+            encrypt_read = resultado[0][3]
+            if(5 == len(resultado[0])):
+                global llave_enc
+                llave_enc = resultado[0][4]
+                entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read+" -llave->"+llave_enc
+            else:
+                entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read
+            crear_llenar_bitacora(entrada_txt)
+        elif(resultado[0][0].lower() == "exec"):
+            primer_linea_exec(resultado[0][1])
+
+        if(tipo_config == "local"): 
+            localOp.ejecutarComando(resultado,area_de_respuestas)
+        else:
+            CloudOp.ejecutarComando(resultado,area_de_respuestas)
 
     boton_ejectuar_linea= tk.Button(pantalla, command=ejetular_linea_entrada, text="Ejecutar", width=10)
     boton_ejectuar_linea.place(x = 513, y =543)
@@ -485,6 +529,51 @@ def generar_pantalla_principal():
 
     return pantalla
 
+def crear_llenar_bitacora(entrada):
+    #Se crea el registro de configure y se agreg al area de output
+    tiempo = datetime.now()
+    tiempo_string = tiempo.strftime("%d/%m/%Y %H:%M:%S")
+    cnt_bitacora = tiempo_string + " - Input - "+entrada+"\n"
+    cnt_bitacora += tiempo_string + " - Output - Se ha configurado el sistema\n"
+    area_de_respuestas.insert(tk.END,cnt_bitacora+"\n")
+
+    #Se crea y determina la existencia de la bitacora
+    ruta = "/logs/"+str(date.today())+"/"
+    #Se comprueba la existencia del directorio
+    if not os.path.exists(localOp.directorio_archivo+ruta):
+        nombre = "log_archivos.txt"
+        #Se limpia la ruta en caso alguna parte tenga doble comilla
+        nueva_ruta = localOp.limpiarRuta(ruta)
+        #Se explora la ruta para crear las carpetas necesarias
+        localOp.crear_ruta(nueva_ruta)
+        #Se crea el archivo y se detecta si no existe uno con nombre igual
+        f = open(nueva_ruta+nombre,"a")
+        f.write(cnt_bitacora)
+        f.close()
+    else:
+        f = open(localOp.directorio_archivo+ruta+"log_archivos.txt","a")
+        f.write(cnt_bitacora)
+        f.close()
+
+def primer_linea_exec(ruta):
+    entrada_txt  = ""
+    archivo = open("."+ruta,"r")
+    #Se extrae la linea de configuración
+    config_parametros = archivo.readline().split(" ")
+    #SE ESTABLECEN LOS PARAMETROS
+    global tipo_config
+    tipo_config = config_parametros[1].split("->")[1]
+    global encrypt_log
+    encrypt_log = config_parametros[2].split("->")[1]
+    global encrypt_read
+    encrypt_read = config_parametros[3].split("->")[1]
+    if(5 == len(config_parametros)):
+        global llave_enc
+        llave_enc = config_parametros[4].split("->")[1]
+        entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read+" -llave->"+llave_enc
+    else:
+        entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read
+    crear_llenar_bitacora(entrada_txt)
 pantalla1 = generar_pantalla_principal()
 ancho_monitor = pantalla1.winfo_screenwidth()
 alto_monitor = pantalla1.winfo_screenheight()
@@ -500,5 +589,4 @@ area_de_respuestas['state'] = 'normal'
 def main():  
     #generar_pantalla_login()
     pantalla1.mainloop()
-
 main()
