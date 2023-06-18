@@ -52,13 +52,13 @@ class NubeCm:
             self.transferir(ruta_origen,ruta_destino,arreglo[0][3],area_output)
          #------------------------------------
         elif(arreglo[0][0].lower() == "rename"):
-            self.cambiar_nombre_archivo(arreglo[0][1],arreglo[0][2],area_output)
+            self.cambiar_nombre_archivo(arreglo[0][1],arreglo[0][2])
          #------------------------------------
         elif(arreglo[0][0].lower() == "modify"):
-            self.cambiar_contenido_archivo(arreglo[0][1],arreglo[0][2],area_output)
+            self.cambiar_contenido_archivo(arreglo[0][1],arreglo[0][2])
          #------------------------------------
         elif(arreglo[0][0].lower() == "add"):
-            self.agregar_contenido_al_final(arreglo[0][1],arreglo[0][2],area_output)
+            self.agregar_contenido_al_final(arreglo[0][1],arreglo[0][2])
          #------------------------------------
         elif(arreglo[0][0].lower() == "backup"):
             self.backup_drive_a_local(id_folder,'./Archivos/')
