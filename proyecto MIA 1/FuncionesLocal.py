@@ -14,7 +14,7 @@ import Nube
 
 class FLocal:
     contenido_output = ""
-    directorio_archivo = "./Archivo"
+    directorio_archivo = "./Archivos"
     encrip = enc.AESencriptador()
 
     def __init__(self):
@@ -23,11 +23,14 @@ class FLocal:
     def getOutput(self):
         return self.contenido_output+"\n"
 
-    def ejecutarComando(self,arreglo,area_output):
+    def ejecutarComando(self,arreglo,area_output,encrypt_read,key):
         if(arreglo[0][0].lower() == "create"):
             self.comandoCrear(arreglo[0][1],arreglo[0][3],arreglo[0][2],area_output)
         elif(arreglo[0][0].lower() == "delete"):
-            self.comandoEliminar(arreglo[0][1],arreglo[0][2],area_output)
+            if len(arreglo) >= 3:
+                self.comandoEliminar(arreglo[0][1],arreglo[0][2],area_output)
+            else:
+                self.comandoEliminar(arreglo[0][1],"",area_output)
         elif(arreglo[0][0].lower() == "copy"):
             ruta_origen1 = self.limpiarRuta(arreglo[0][1])
             ruta_destino1 = self.limpiarRuta(arreglo[0][2])
@@ -50,23 +53,23 @@ class FLocal:
 
             
         elif(arreglo[0][0].lower() == "exec"):
-            self.ejecutarArchivo(arreglo[0][1],area_output)
+            self.ejecutarArchivo(arreglo[0][1],area_output,encrypt_read,key)
 
-    def ejecutarArchivo(self,ruta,area_output):
+    def ejecutarArchivo(self,ruta,area_output,encrypt_read,key):
         archivo = open("."+ruta,"r")
+        purga_arch = archivo.readline()
         #Se extrae la linea de configuración
-        config_parametros = archivo.readline().split(" ")
-        if(config_parametros[3].split("->")[1] == "true"):
-            llave = config_parametros[4].split("->")[1]
+        if(encrypt_read == "true"):
+            llave = key
             llave = llave.replace("\n","")
             lista_comandos = self.encrip.desencriptar(str(archivo.read().replace("\n","")),llave).decode("utf-8","ignore")
             for comando in lista_comandos.splitlines():
                 analizadorEntrada.comandos = []
-                self.ejecutarComando(analizadorEntrada.parser.parse(comando, lexer=analizadorEntrada.lexer),area_output)
+                self.ejecutarComando(analizadorEntrada.parser.parse(comando, lexer=analizadorEntrada.lexer),area_output,encrypt_read,key)
         else:
             for linea in archivo:
                 analizadorEntrada.comandos = []
-                self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer),area_output)
+                self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer),area_output,encrypt_read,key)
             
     def comandoCrear(self,nombre,contenido,ruta,area_output):
         #Se limpia la ruta en caso alguna parte tenga doble comilla
@@ -216,7 +219,7 @@ class FLocal:
                 print("Intentando crear")
                 os.makedirs(destino)
                 print("directorio creado")
-                self.transferir_archivos_directorio(origen,destino)
+                self.transferir_archivos_directorio(origen,destino,modo,area_output)
 
         elif os.path.isfile(origen):
 
@@ -266,7 +269,7 @@ class FLocal:
                 #print("Intentando crear")
                 os.makedirs(destino)
                 #print("directorio creado")
-                self.transferir_archivos_directorio(origen,destino)
+                self.transferir_archivos_directorio(origen,destino,modo,area_output)
         else:
             output_bt ="No se encontró nada en el directorio: "+origen+"para mover a: "+destino
         self.generar_registro(input_bt,output_bt,area_output)
