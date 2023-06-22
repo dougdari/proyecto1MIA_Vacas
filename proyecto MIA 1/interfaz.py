@@ -22,11 +22,12 @@ coordenada_y = 0
 
 usuario_nombre_logueado = ""
 usuario_contrasenia_logueado = ""
-
+global llave_enc
+llave_enc = ""
 #PARAMETROS QUE ALMACENARÁN LOS VALORES DE LA OP CONFIG
 
 def generar_pantalla_login():
-
+    
     pantalla1.withdraw()
     pantallaLogin = tk.Tk()    
     pantallaLogin.title("Proyecto MIA 1 login")
@@ -64,12 +65,19 @@ def generar_pantalla_login():
     def ir_a_pantalla_principal():
         resv = logL.verificar(campo_usuario.get(),campo_contrasenia.get())
         #Agregar en esta area el codigo o funcion para verificar si la contrasenia es valida
-
+        tiempo = datetime.now()
+        tiempo_string = tiempo.strftime("%d/%m/%Y %H:%M:%S")
+        cnt_bitacora = tiempo_string + " - Input - "+campo_usuario.get()+" Inicia Sesión\n"
         if resv:
+            cnt_bitacora += tiempo_string + " - Output - Sesión Iniciada Correctamente\n"
+            crear_llenar_bitacora(cnt_bitacora)
             pantallaLogin.destroy()
             pantalla1.deiconify()  
         else:
+            cnt_bitacora += tiempo_string + " - Output - Sesión Iniciada Incorrectamente\n"
+            crear_llenar_bitacora(cnt_bitacora)
             messagebox.showinfo("Aviso", "password incorrecto.")
+            
 
         
 
@@ -144,8 +152,10 @@ def generar_pantall_comando_add():
     def obtener_parametros_add():
         path =  campo_path.get()
         body = campo_body.get()
-        localOp.comandoAgregar(path,body,area_de_respuestas)
-    
+        if tipo_config == "local":
+            localOp.comandoAgregar(path,body,area_de_respuestas)
+        else:
+            CloudOp.agregar_contenido_al_final(path,body,area_de_respuestas)
     boton_add = tk.Button(pantalla_comando_add, command=obtener_parametros_add, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
 
@@ -178,7 +188,10 @@ def generar_pantall_comando_modify():
     def obtener_parametros_modify():
         path =  campo_path.get()
         body = campo_body.get()
-        localOp.comandoModificar(path,body,area_de_respuestas)
+        if tipo_config == "local":
+            localOp.comandoModificar(path,body,area_de_respuestas)
+        else:
+            CloudOp.cambiar_contenido_archivo(path,body,area_de_respuestas)
     
     boton_add = tk.Button(pantalla_comando_modify, command=obtener_parametros_modify, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -212,7 +225,10 @@ def generar_pantall_comando_rename():
     def obtener_parametros_rename():
         path =  campo_path.get()
         name = campo_name.get()
-        localOp.comandoRenombrar(path,name,area_de_respuestas)
+        if tipo_config=="local":
+            localOp.comandoRenombrar(path,name,area_de_respuestas)
+        else:
+            CloudOp.cambiar_nombre_archivo(path,name,area_de_respuestas)
     
     boton_add = tk.Button(pantalla_comando_rename, command=obtener_parametros_rename, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -255,7 +271,10 @@ def generar_pantall_comando_transfer():
         from_ =  campo_from.get()
         to_ = campo_to.get()
         mode = campo_mode.get()
-        localOp.transferir_archivos_directorio("./Archivo"+from_,"./Archivo"+to_,mode,area_de_respuestas)
+        if tipo_config=="local":
+            localOp.transferir_archivos_directorio("./Archivo"+from_,"./Archivo"+to_,mode,area_de_respuestas)
+        else:
+            CloudOp.transferir(from_,to_,mode,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_transfer, command=obtener_parametros_transfer, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -314,7 +333,7 @@ def generar_pantalla_comando_configure():
     campo_llave.place(x=155, y=205)
 
     def obtener_parametros_configure():
-        type =  campo_type.get()
+        type =  campo_type.get().lower()
         log = campo_encrypt_log.get()
         read = campo_encrypt_read.get()
         llave = campo_llave.get()
@@ -368,7 +387,10 @@ def generar_pantalla_comando_copy():
         path = campo_path.get()
         name = campo_destino.get()
         print(path + " " + name)
-        localOp.copiar_archivos_directorio("./Archivo"+path,"./Archivo"+name,area_de_respuestas)
+        if tipo_config=="local":
+            localOp.copiar_archivos_directorio("./Archivo"+path,"./Archivo"+name,area_de_respuestas)
+        else:
+            CloudOp.copiar(path,name,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_copy, command=obtener_parametros_copy, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -402,7 +424,10 @@ def generar_pantalla_comando_delete():
     def obtener_parametros_delete():
         path = campo_path.get()
         name = campo_name.get()
-        localOp.comandoEliminar(name,path,area_de_respuestas)
+        if tipo_config=="local":
+            localOp.comandoEliminar(name,path,area_de_respuestas)
+        else:
+            CloudOp.eliminar(name,path,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_delete, command=obtener_parametros_delete, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -443,7 +468,10 @@ def generar_pantalla_comando_create():
         name =  campo_name.get()
         body = campo_body.get()
         path = campo_path.get()
-        localOp.comandoCrear(name,body,path,area_de_respuestas)
+        if tipo_config=="local":
+            localOp.comandoCrear(name,body,path,area_de_respuestas)
+        else:
+            CloudOp.crear_archivo(name,body,path,area_de_respuestas)
 
     boton_add = tk.Button(pantalla_comando_create, command=obtener_parametros_create, text="Ejecutar", width=30)
     boton_add.place(x = 155, y = 250)
@@ -471,14 +499,14 @@ def generar_pantalla_principal():
         if(resultado[0][0].lower() == "configure"):
             entrada_txt = ""
             global tipo_config
-            tipo_config = resultado[0][1]
+            tipo_config = resultado[0][1].lower()
             global encrypt_log
-            encrypt_log = resultado[0][2]
+            encrypt_log = resultado[0][2].lower()
             global encrypt_read
-            encrypt_read = resultado[0][3]
+            encrypt_read = resultado[0][3].lower()
             if(5 == len(resultado[0])):
                 global llave_enc
-                llave_enc = resultado[0][4]
+                llave_enc = resultado[0][4].lower()
                 entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read+" -llave->"+llave_enc
             else:
                 entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read
@@ -486,10 +514,10 @@ def generar_pantalla_principal():
         elif(resultado[0][0].lower() == "exec"):
             primer_linea_exec(resultado[0][1])
 
-        if(tipo_config == "local"): 
-            localOp.ejecutarComando(resultado,area_de_respuestas)
+        if(tipo_config == "local"):
+            localOp.ejecutarComando(resultado,area_de_respuestas,encrypt_read,llave_enc)
         else:
-            CloudOp.ejecutarComando(resultado,area_de_respuestas)
+            CloudOp.ejecutarComando(resultado,area_de_respuestas,encrypt_read,llave_enc)
 
     boton_ejectuar_linea= tk.Button(pantalla, command=ejetular_linea_entrada, text="Ejecutar", width=10)
     boton_ejectuar_linea.place(x = 513, y =543)
@@ -562,14 +590,14 @@ def primer_linea_exec(ruta):
     config_parametros = archivo.readline().split(" ")
     #SE ESTABLECEN LOS PARAMETROS
     global tipo_config
-    tipo_config = config_parametros[1].split("->")[1]
+    tipo_config = config_parametros[1].split("->")[1].lower()
     global encrypt_log
-    encrypt_log = config_parametros[2].split("->")[1]
+    encrypt_log = config_parametros[2].split("->")[1].lower()
     global encrypt_read
-    encrypt_read = config_parametros[3].split("->")[1]
+    encrypt_read = config_parametros[3].split("->")[1].lower()
     if(5 == len(config_parametros)):
         global llave_enc
-        llave_enc = config_parametros[4].split("->")[1]
+        llave_enc = config_parametros[4].split("->")[1].lower()
         entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read+" -llave->"+llave_enc
     else:
         entrada_txt = "configure -type->"+tipo_config+" -encrypt_log->"+encrypt_log+" -encrypt_read->"+encrypt_read
