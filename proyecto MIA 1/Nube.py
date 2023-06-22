@@ -8,6 +8,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import os.path
 import os
+import Encriptador as enc
 from datetime import date
 from datetime import datetime
 import shutil
@@ -17,6 +18,7 @@ id_folder = '1ba5thhoBgCP04YAXIeIWeRZg9YMmFT_P'
 
 
 class NubeCm:
+    encrip = enc.AESencriptador()
     def iniciosesion(self):
         GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = direc_credenciales
         gauth = GoogleAuth()
@@ -33,13 +35,16 @@ class NubeCm:
         credenciales = GoogleDrive(gauth)
         return credenciales
 
-    def ejecutarComando(self,arreglo,area_output):
+    def ejecutarComando(self,arreglo,area_output,encrypt_read,llave_enc):
         #------------------------------------
         if(arreglo[0][0].lower() == "create"):
             self.crear_archivo(id_folder,arreglo[0][1],arreglo[0][3],arreglo[0][2],area_output)
          #------------------------------------
         elif(arreglo[0][0].lower() == "delete"):
-            self.eliminar(arreglo[0][1],arreglo[0][2],area_output)
+            if len(arreglo) >= 3:
+                self.eliminar(arreglo[0][1],arreglo[0][2],area_output)
+            else:
+                self.eliminar(arreglo[0][1],"",area_output)
          #------------------------------------
         elif(arreglo[0][0].lower() == "copy"):
             ruta_origen1 = self.limpiarRuta(arreglo[0][1])
@@ -65,7 +70,7 @@ class NubeCm:
             print("Respaldo")
          #------------------------------------
         elif(arreglo[0][0].lower() == "exec"):
-            self.ejecutarArchivo(arreglo[0][1],area_output)
+            self.ejecutarArchivo(arreglo[0][1],area_output,encrypt_read,llave_enc)
 
     def crear_archivo_texto(self,file_name,content,id_folder):
         credenciales = self.iniciosesion()
@@ -116,7 +121,7 @@ class NubeCm:
 
         return auxRaiz
 
-    def crear_archivo(self,id_folder,nombre,contenido,ruta,area_output):
+    def crear_archivo(self,nombre,contenido,ruta,area_output):
         credenciales = self.iniciosesion()
         destinoId = self.recorrer_ruta_agregar_archivo(id_folder,credenciales,ruta)
         arch = credenciales.CreateFile({'title': nombre,
@@ -271,7 +276,7 @@ class NubeCm:
                 #Se crea el contenido de cada carpeta de manera iterativa
                 self.crear_ruta_ct(id_origen,ruta_destino)
         #Se eliminan los archivos originales para terminar el transfer
-        self.eliminar(ruta_origen_limpia)
+        self.eliminar(ruta_origen_limpia,area_output)
             
     def crear_ruta_ct(self,id_carpeta_expandir,ruta_almacen):
         credenciales = self.iniciosesion()
@@ -285,21 +290,20 @@ class NubeCm:
                 ruta_destino=self.get_IDFolder(lista2,arch)
                 self.crear_ruta_ct(arch['id'],ruta_destino)
 
-    def ejecutarArchivo(self,ruta,area_output):
+    def ejecutarArchivo(self,ruta,area_output,encrypt_read,llave_enc):
         archivo = open("."+ruta,"r")
-        #Se extrae la linea de configuración
-        config_parametros = archivo.readline().split(" ")
-        if(config_parametros[3].split("->")[1] == "true"):
-            llave = config_parametros[4].split("->")[1]
+        purga_arch = archivo.readline()
+        if(encrypt_read == "true"):
+            llave = llave_enc
             llave = llave.replace("\n","")
             lista_comandos = self.encrip.desencriptar(str(archivo.read().replace("\n","")),llave).decode("utf-8","ignore")
             for comando in lista_comandos.splitlines():
                 analizadorEntrada.comandos = []
-                self.ejecutarComando(analizadorEntrada.parser.parse(comando, lexer=analizadorEntrada.lexer),area_output)
+                self.ejecutarComando(analizadorEntrada.parser.parse(comando, lexer=analizadorEntrada.lexer),area_output,encrypt_read,llave_enc)
         else:
             for linea in archivo:
                 analizadorEntrada.comandos = []
-                self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer),area_output)
+                self.ejecutarComando(analizadorEntrada.parser.parse(linea, lexer=analizadorEntrada.lexer),area_output,encrypt_read,llave_enc)
 
     def get_IDFolder(self,file_list,file_padre):
         for x in file_list:
