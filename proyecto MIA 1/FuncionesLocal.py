@@ -203,6 +203,8 @@ class FLocal:
 
                     nueva_ruta_nombre_y_ruta_nuevo_archivo = os.path.join(destino, nuevo_nombre_carpeta)
                     shutil.copytree(origen, nueva_ruta_nombre_y_ruta_nuevo_archivo)
+
+                    print(origen)
                     shutil.rmtree(origen)
 
                 else:
